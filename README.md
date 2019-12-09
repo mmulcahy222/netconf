@@ -19,7 +19,7 @@ I downloaded the Cisco YANG files in Github, and found them unreliable to help m
 Enter the PYang tool. Of course, it allows to convert Yang Models into many many formats, such as Text-Based Graphs called Trees. They were also converted into XML. BOTH are very helpful in determining the Netconf XML Payload for me (so far). 
 
 yang_to_xml.py converts all the native Yang Models into Trees & XML (python & subprocess instead of manually)
-
+E
 The Tree Format was helpful in helping me determine which attributes were Read Only & Read/Write, and the XML format was helpful in helping me find the proper hierarchy of XML in a very easy to read format. The text-based Tree was too cumbersome for that purpose.
 
 xml_to_graph.py converted XML-formatted Yang files into a neat graph like this:
@@ -42,9 +42,6 @@ I happily changed the hostname, description of Cisco CSR 1000V with Netconf XML,
 
 ![](images/xml_response.jpg)
 
-### graph.txt (to create XML playload)
-
-![](images/xml_hierarchy.jpg)
 
 ### Code to change the IP addresses (unfortunately I can't find a picture of it changing. Take my word :) )
 
