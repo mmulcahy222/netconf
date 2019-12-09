@@ -1,0 +1,118 @@
+module: cisco-bridge-domain
+  +--rw bridge-domain-config
+  |  +--rw global
+  |  |  +--rw bd-state-notification-enabled?   boolean
+  |  |  +--rw bd-state-notification-rate?      uint32
+  |  |  +--rw pbb
+  |  |     +--rw backbone-src-mac?   yang:mac-address
+  |  +--rw bridge-groups {configurable-bd-groups}?
+  |  |  +--rw bridge-group* [name]
+  |  |     +--rw name    string
+  |  +--rw bridge-domains
+  |     +--rw bridge-domain* [id]
+  |        +--rw id                               string
+  |        +--rw bridge-group                     -> /bridge-domain-config/bridge-groups/bridge-group/name {configurable-bd-groups}?
+  |        +--rw enabled?                         boolean
+  |        +--rw bd-status-change-notification?   boolean
+  |        +--rw members
+  |        |  +--rw ac-member* [interface]
+  |        |  |  +--rw interface              if:interface-ref
+  |        |  |  +--rw split-horizon-group! {configurable-bd-member-features}?
+  |        |  |  |  +--rw id    uint16 {configurable-bd-sh-group-number}?
+  |        |  |  +--rw mac {configurable-bd-member-features}?
+  |        |  +--rw vfi-member* [interface]
+  |        |  |  +--rw interface    if:interface-ref
+  |        |  +--rw access-pw-member
+  |        |     +--rw access-pw-if-member* [interface]
+  |        |     |  +--rw interface    if:interface-ref
+  |        |     +--rw pw-neighbor-spec* [neighbor-ip-address vc-id]
+  |        |        +--rw split-horizon-group! {configurable-bd-member-features}?
+  |        |        |  +--rw id    uint16 {configurable-bd-sh-group-number}?
+  |        |        +--rw mac {configurable-bd-member-features}?
+  |        |        +--rw backup
+  |        +--rw mtu?                             uint16 {configurable-bd-mtu}?
+  |        +--rw flooding-mode?                   enumeration {configurable-bd-flooding-mode}?
+  |        +--rw mac
+  +--ro bridge-domain-state
+     +--ro system-capabilities
+     |  +--ro max-bd?                    uint32
+     |  +--ro max-ac-per-bd?             uint32
+     |  +--ro max-pw-per-bd?             uint32
+     |  +--ro max-vfi-per-bd?            uint32
+     |  +--ro max-sh-group-per-bd?       uint32
+     |  +--ro max-interflex-if-per-bd?   uint32
+     +--ro module-capabilities
+     |  +--ro modules* [name]
+     |     +--ro name                   string
+     |     +--ro max-mac-per-bd?        uint32
+     |     +--ro max-pdd-edge-bd?       uint32
+     |     +--ro max-bd?                uint32
+     |     +--ro max-ac-per-bd?         uint32
+     |     +--ro max-pw-per-bd?         uint32
+     |     +--ro max-vfi-per-bd?        uint32
+     |     +--ro max-sh-group-per-bd?   uint32
+     +--ro bridge-domains
+     |  +--ro bridge-domain* [id]
+     |     +--ro id                    string
+     |     +--ro bd-state              bridge-domain-state-type
+     |     +--ro create-time?          yang:timestamp
+     |     +--ro last-status-change?   yang:timeticks
+     |     +--ro mac-limit-reached?    boolean
+     |     +--ro p2mp-pw-disabled?     boolean
+     |     +--ro members
+     |        +--ro ac-member* [interface]
+     |        |  +--ro interface           if:interface-state-ref
+     |        |  +--ro static-mac-count?   uint32
+     |        |  +--ro dai-stats
+     |        |  |  +--ro packet-drops?   yang:counter64
+     |        |  |  +--ro byte-drops?     yang:counter64
+     |        |  +--ro ipsg-stats
+     |        |     +--ro packet-drops?   yang:counter64
+     |        |     +--ro byte-drops?     yang:counter64
+     |        +--ro vfi-member* [interface]
+     |        |  +--ro interface    if:interface-state-ref
+     |        +--ro access-pw-member* [vc-peer-address vc-id]
+     +--ro mac-table* [bd-id mac-address]
+        +--ro bd-id          string
+        +--ro mac-address    yang:mac-address
+        +--ro mac-type?      enumeration
+        +--ro interface      if:interface-ref
+        +--ro secure-mac?    boolean
+        +--ro ntfy-mac?      boolean
+        +--ro age?           yang:timeticks
+        +--ro location?      string
+
+  rpcs:
+    +---x clear-bridge-domain {clear-bridge-domain}?
+    |  +---w input
+    |  |  +---w (bridge-domains)
+    |  |     +--:(all)
+    |  |     |  +---w all?     empty
+    |  |     +--:(bd-id)
+    |  |     |  +---w bd-id?   string
+    |  |     +--:(bg-id)
+    |  |        +---w bg-id?   string {configurable-bd-groups}?
+    |  +--ro output
+    |     +--ro errstr?   string
+    +---x clear-mac-address
+    |  +---w input
+    |  |  +---w bridge-domain
+    |  |  |  +---w bd-id    string
+    |  |  |  +---w bg-id    string {configurable-bd-groups}?
+    |  |  +---w interface?       if:interface-ref
+    |  |  +---w mac-address?     yang:mac-address
+    |  +--ro output
+    |     +--ro errstr?   string
+    +---x create-parameterized-bridge-domains {parameterized-bridge-domains}?
+       +---w input
+       |  +---w parameter?   enumeration
+       |  +---w member* [interface]
+       |     +---w interface    if:interface-ref
+       +--ro output
+          +--ro errstr?   string
+
+  notifications:
+    +---n bd-state-notification
+       +--ro id?         bd:bridge-domain-oper-ref
+       +--ro bd-state?   bridge-domain-state-type
+       +--ro time?       yang:timestamp

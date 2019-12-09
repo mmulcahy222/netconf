@@ -1,0 +1,34 @@
+module: cisco-ia
+
+  rpcs:
+    +---x sync-from
+    |  +---w input
+    |  |  +---w sync-defaults?         empty
+    |  |  +---w ignore-presrv-paths?   empty
+    |  +--ro output
+    |     +--ro result?   string
+    +---x save-config
+    |  +--ro output
+    |     +--ro result?   string
+    +---x is-syncing
+    |  +--ro output
+    |     +--ro result?   string
+    +---x checkpoint
+    |  +--ro output
+    |     +--ro result?   string
+    +---x revert
+    |  +---w input
+    |  |  +---w now?     empty
+    |  |  +---w timer?   int16
+    |  |  +---w idle?    int16
+    |  +--ro output
+    |     +--ro result?   string
+    +---x rollback
+       +---w input
+       |  +---w target-url         string
+       |  +---w verbose?           boolean
+       |  +---w nolock?            boolean
+       |  +---w revert-on-error?   empty
+       |  +---w revert-timer?      int16
+       +--ro output
+          +--ro result?   string

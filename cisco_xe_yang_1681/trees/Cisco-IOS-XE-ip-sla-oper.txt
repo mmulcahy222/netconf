@@ -1,0 +1,102 @@
+module: Cisco-IOS-XE-ip-sla-oper
+  +--ro ip-sla-stats
+     +--ro sla-oper-entry* [oper-id]
+        +--ro oper-id                   uint32
+        +--ro oper-type?                ip-sla-ios-xe-oper:sla-oper-type
+        +--ro latest-return-code?       ip-sla-ios-xe-oper:sla-return-code
+        +--ro success-count?            uint32
+        +--ro failure-count?            uint32
+        +--ro latest-oper-start-time?   yang:date-and-time
+        +--ro rtt-info
+        |  +--ro latest-rtt
+        |  |  +--ro (latestrtt-choice)?
+        |  |     +--:(rtt-known)
+        |  |     |  +--ro rtt?              uint64
+        |  |     +--:(rtt-unknown)
+        |  |     |  +--ro unknown?          empty
+        |  |     +--:(rtt-could-not-find)
+        |  |        +--ro could-not-find?   empty
+        |  +--ro time-to-live
+        |     +--ro (timetolive-choice)?
+        |        +--:(ttl-finite)
+        |        |  +--ro ttl?       uint64
+        |        +--:(ttl-forever)
+        |           +--ro forever?   empty
+        +--ro measure-stats
+        |  +--ro intv-start-time?   yang:date-and-time
+        |  +--ro init-count?        uint32
+        |  +--ro complete-count?    uint32
+        |  +--ro valid?             boolean
+        +--ro stats
+           +--ro rtt
+           |  +--ro rtt-count?         uint32
+           |  +--ro sla-time-values
+           |     +--ro min?        uint32
+           |     +--ro avg?        uint32
+           |     +--ro max?        uint32
+           |     +--ro accuracy?   ip-sla-ios-xe-oper:accuracy-type
+           +--ro oneway-latency
+           |  +--ro sample-count?   uint32
+           |  +--ro sd
+           |  |  +--ro min?        uint32
+           |  |  +--ro avg?        uint32
+           |  |  +--ro max?        uint32
+           |  |  +--ro accuracy?   ip-sla-ios-xe-oper:accuracy-type
+           |  +--ro ds
+           |     +--ro min?        uint32
+           |     +--ro avg?        uint32
+           |     +--ro max?        uint32
+           |     +--ro accuracy?   ip-sla-ios-xe-oper:accuracy-type
+           +--ro jitter
+           |  +--ro sd-sample-count?   uint32
+           |  +--ro ds-sample-count?   uint32
+           |  +--ro sd
+           |  |  +--ro min?        uint32
+           |  |  +--ro avg?        uint32
+           |  |  +--ro max?        uint32
+           |  |  +--ro accuracy?   ip-sla-ios-xe-oper:accuracy-type
+           |  +--ro ds
+           |     +--ro min?        uint32
+           |     +--ro avg?        uint32
+           |     +--ro max?        uint32
+           |     +--ro accuracy?   ip-sla-ios-xe-oper:accuracy-type
+           +--ro over-threshold
+           |  +--ro rtt-count?   uint32
+           |  +--ro percent?     uint8
+           +--ro packet-loss
+           |  +--ro unprocessed-packets?   uint32
+           |  +--ro sd-count?              uint32
+           |  +--ro sd-loss
+           |  |  +--ro loss-period-count?           uint32
+           |  |  +--ro loss-period-len-min?         uint32
+           |  |  +--ro loss-period-len-max?         uint32
+           |  |  +--ro inter-loss-period-len-min?   uint32
+           |  |  +--ro inter-loss-period-len-max?   uint32
+           |  +--ro ds-count?              uint32
+           |  +--ro ds-loss
+           |  |  +--ro loss-period-count?           uint32
+           |  |  +--ro loss-period-len-min?         uint32
+           |  |  +--ro loss-period-len-max?         uint32
+           |  |  +--ro inter-loss-period-len-min?   uint32
+           |  |  +--ro inter-loss-period-len-max?   uint32
+           |  +--ro out-of-sequence?       uint32
+           |  +--ro drops?                 uint32
+           |  +--ro late-arrivals?         uint32
+           |  +--ro skipped-packets?       uint32
+           +--ro icmp-packet-loss
+           |  +--ro late-arrivals?               uint32
+           |  +--ro out-of-sequence?             uint32
+           |  +--ro out-of-sequence-sd?          uint32
+           |  +--ro out-of-sequence-ds?          uint32
+           |  +--ro out-of-sequence-both?        uint32
+           |  +--ro skipped-packets?             uint32
+           |  +--ro unprocessed-packets?         uint32
+           |  +--ro packet-loss?                 uint32
+           |  +--ro loss-period-count?           uint32
+           |  +--ro loss-period-len-min?         uint32
+           |  +--ro loss-period-len-max?         uint32
+           |  +--ro inter-loss-period-len-min?   uint32
+           |  +--ro inter-loss-period-len-max?   uint32
+           +--ro voice-score
+              +--ro icpif?   uint32
+              +--ro mos?     uint32

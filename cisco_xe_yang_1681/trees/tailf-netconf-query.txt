@@ -1,0 +1,9 @@
+module: tailf-netconf-query
+
+  rpcs:
+    +---x start-query
+    +---x fetch-query-result
+    |  +--ro output
+    |     +--ro query-result
+    +---x reset-query
+    +---x stop-query

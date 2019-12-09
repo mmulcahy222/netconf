@@ -1,0 +1,79 @@
+module: openconfig-acl
+  +--rw acl
+     +--rw config
+     +--ro state
+     |  +--ro counter-capability?   identityref
+     +--rw acl-sets
+     |  +--rw acl-set* [name type]
+     |     +--rw name           -> ../config/name
+     |     +--rw type           -> ../config/type
+     |     +--rw config
+     |     |  +--rw name?          string
+     |     |  +--rw type?          identityref
+     |     |  +--rw description?   string
+     |     +--ro state
+     |     |  +--ro name?          string
+     |     |  +--ro type?          identityref
+     |     |  +--ro description?   string
+     |     +--rw acl-entries
+     |        +--rw acl-entry* [sequence-id]
+     |           +--rw sequence-id        -> ../config/sequence-id
+     |           +--rw config
+     |           |  +--rw sequence-id?   uint32
+     |           |  +--rw description?   string
+     |           +--ro state
+     |           |  +--ro sequence-id?       uint32
+     |           |  +--ro description?       string
+     |           |  +--ro matched-packets?   oc-yang:counter64
+     |           |  +--ro matched-octets?    oc-yang:counter64
+     |           +--rw input-interface
+     |           |  +--rw config
+     |           |  +--ro state
+     |           +--rw actions
+     |              +--rw config
+     |              |  +--rw forwarding-action    identityref
+     |              |  +--rw log-action?          identityref
+     |              +--ro state
+     |                 +--ro forwarding-action    identityref
+     |                 +--ro log-action?          identityref
+     +--rw interfaces
+        +--rw interface* [id]
+           +--rw id                  -> ../config/id
+           +--rw config
+           |  +--rw id?   oc-if:interface-id
+           +--ro state
+           |  +--ro id?   oc-if:interface-id
+           +--rw ingress-acl-sets
+           |  +--rw ingress-acl-set* [set-name type]
+           |     +--rw set-name       -> ../config/set-name
+           |     +--rw type           -> ../config/type
+           |     +--rw config
+           |     |  +--rw set-name?   -> ../../../../../../acl-sets/acl-set/config/name
+           |     |  +--rw type?       -> ../../../../../../acl-sets/acl-set[name=current()/../set-name]/config/type
+           |     +--ro state
+           |     |  +--ro set-name?   -> ../../../../../../acl-sets/acl-set/config/name
+           |     |  +--ro type?       -> ../../../../../../acl-sets/acl-set[name=current()/../set-name]/config/type
+           |     +--ro acl-entries
+           |        +--ro acl-entry* [sequence-id]
+           |           +--ro sequence-id    -> ../state/sequence-id
+           |           +--ro state
+           |              +--ro sequence-id?       -> /acl/acl-sets/acl-set[name=current()/../../../../set-name][type=current()/../../../../type]/acl-entries/acl-entry/sequence-id
+           |              +--ro matched-packets?   oc-yang:counter64
+           |              +--ro matched-octets?    oc-yang:counter64
+           +--rw egress-acl-sets
+              +--rw egress-acl-set* [set-name type]
+                 +--rw set-name       -> ../config/set-name
+                 +--rw type           -> ../config/type
+                 +--rw config
+                 |  +--rw set-name?   -> ../../../../../../acl-sets/acl-set/config/name
+                 |  +--rw type?       -> ../../../../../../acl-sets/acl-set[name=current()/../set-name]/config/type
+                 +--ro state
+                 |  +--ro set-name?   -> ../../../../../../acl-sets/acl-set/config/name
+                 |  +--ro type?       -> ../../../../../../acl-sets/acl-set[name=current()/../set-name]/config/type
+                 +--ro acl-entries
+                    +--ro acl-entry* [sequence-id]
+                       +--ro sequence-id    -> ../state/sequence-id
+                       +--ro state
+                          +--ro sequence-id?       -> /acl/acl-sets/acl-set[name=current()/../../../../set-name][type=current()/../../../../type]/acl-entries/acl-entry/sequence-id
+                          +--ro matched-packets?   oc-yang:counter64
+                          +--ro matched-octets?    oc-yang:counter64

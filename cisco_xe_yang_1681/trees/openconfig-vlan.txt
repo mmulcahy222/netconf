@@ -1,0 +1,16 @@
+module: openconfig-vlan
+  +--rw vlans
+     +--rw vlan* [vlan-id]
+        +--rw vlan-id    -> ../config/vlan-id
+        +--rw config
+        |  +--rw vlan-id?   oc-vlan-types:vlan-id
+        |  +--rw name?      string
+        |  +--rw status?    enumeration
+        |  +--rw tpid?      identityref
+        +--ro state
+        |  +--ro vlan-id?   oc-vlan-types:vlan-id
+        |  +--ro name?      string
+        |  +--ro status?    enumeration
+        |  +--ro tpid?      identityref
+        +--rw members
+           +--ro member* []

@@ -1,0 +1,10 @@
+module: ietf-diffserv-policy
+  +--rw policies {policy-template-support}?
+     +--rw policy-entry* [policy-name]
+        +--rw policy-name         string
+        +--rw policy-descr?       string
+        +--rw classifier-entry* [classifier-entry-name]
+           +--rw classifier-entry-name          string
+           +--rw classifier-action-entry-cfg* [action-type]
+              +--rw action-type    identityref
+              +--rw (action-cfg-params)?

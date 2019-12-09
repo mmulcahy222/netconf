@@ -1,0 +1,101 @@
+module: openconfig-network-instance
+  +--rw network-instances
+     +--rw network-instance* [name]
+        +--rw name                       -> ../config/name
+        +--rw config
+        |  +--rw name?                  string
+        |  +--rw type?                  identityref
+        |  +--rw enabled?               boolean
+        |  +--rw description?           string
+        |  +--rw router-id?             yang:dotted-quad
+        |  +--rw route-distinguisher?   oc-ni-types:route-distinguisher
+        +--ro state
+        |  +--ro name?                  string
+        |  +--ro type?                  identityref
+        |  +--ro enabled?               boolean
+        |  +--ro description?           string
+        |  +--ro router-id?             yang:dotted-quad
+        |  +--ro route-distinguisher?   oc-ni-types:route-distinguisher
+        +--rw encapsulation
+        |  +--rw config
+        |  |  +--rw encapsulation-type?      identityref
+        |  |  +--rw label-allocation-mode?   identityref
+        |  +--ro state
+        |     +--ro encapsulation-type?      identityref
+        |     +--ro label-allocation-mode?   identityref
+        +--rw inter-instance-policies
+        +--rw table-connections
+        |  +--rw table-connection* [src-protocol dst-protocol address-family]
+        |     +--rw src-protocol      -> ../config/src-protocol
+        |     +--rw dst-protocol      -> ../config/dst-protocol
+        |     +--rw address-family    -> ../config/address-family
+        |     +--rw config
+        |     |  +--rw src-protocol?     -> ../../../../tables/table/config/protocol
+        |     |  +--rw address-family?   -> ../../../../tables/table[protocol=current()/../src-protocol]/config/address-family
+        |     |  +--rw dst-protocol?     -> ../../../../tables/table/config/protocol
+        |     +--ro state
+        |        +--ro src-protocol?     -> ../../../../tables/table/config/protocol
+        |        +--ro address-family?   -> ../../../../tables/table[protocol=current()/../src-protocol]/config/address-family
+        |        +--ro dst-protocol?     -> ../../../../tables/table/config/protocol
+        +--rw interfaces
+        |  +--rw interface* [id]
+        |     +--rw id        -> ../config/id
+        |     +--rw config
+        |     |  +--rw id?                            string
+        |     |  +--rw associated-address-families*   identityref
+        |     +--ro state
+        |        +--ro id?                            string
+        |        +--ro associated-address-families*   identityref
+        +--rw tables
+        |  +--rw table* [protocol address-family]
+        |     +--rw protocol          -> ../config/protocol
+        |     +--rw address-family    -> ../config/address-family
+        |     +--rw config
+        |     |  +--rw protocol?         -> ../../../../protocols/protocol/config/identifier
+        |     |  +--rw address-family?   identityref
+        |     +--ro state
+        |        +--ro protocol?         -> ../../../../protocols/protocol/config/identifier
+        |        +--ro address-family?   identityref
+        +--rw connection-points
+        |  +--rw connection-point* [connection-point-id]
+        |     +--rw connection-point-id    -> ../config/connection-point-id
+        |     +--rw config
+        |     |  +--rw connection-point-id?   string
+        |     +--ro state
+        |     |  +--ro connection-point-id?   string
+        |     +--rw endpoints
+        |        +--rw endpoint* [endpoint-id]
+        |           +--rw endpoint-id    -> ../config/endpoint-id
+        |           +--rw config
+        |           |  +--rw endpoint-id?   string
+        |           |  +--rw precedence?    uint16
+        |           |  +--rw type?          identityref
+        |           +--ro state
+        |           |  +--ro endpoint-id?   string
+        |           |  +--ro precedence?    uint16
+        |           |  +--ro type?          identityref
+        |           |  +--ro active?        boolean
+        |           +--rw local
+        |           |  +--rw config
+        |           |  +--ro state
+        |           +--rw remote
+        |              +--rw config
+        |              |  +--rw remote-system?                inet:ip-address
+        |              |  +--rw virtual-circuit-identifier?   uint32
+        |              +--ro state
+        |                 +--ro remote-system?                inet:ip-address
+        |                 +--ro virtual-circuit-identifier?   uint32
+        +--rw protocols
+           +--rw protocol* [identifier name]
+              +--rw identifier    -> ../config/identifier
+              +--rw name          -> ../config/name
+              +--rw config
+              |  +--rw identifier?       identityref
+              |  +--rw name?             string
+              |  +--rw enabled?          boolean
+              |  +--rw default-metric?   uint32
+              +--ro state
+                 +--ro identifier?       identityref
+                 +--ro name?             string
+                 +--ro enabled?          boolean
+                 +--ro default-metric?   uint32

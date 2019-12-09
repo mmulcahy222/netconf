@@ -1,0 +1,5 @@
+module: openconfig-bgp
+  +--rw bgp
+     +--rw global
+     +--rw neighbors
+     +--rw peer-groups

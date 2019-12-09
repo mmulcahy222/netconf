@@ -1,0 +1,3192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module name="Cisco-IOS-XE-ospf"
+        xmlns="urn:ietf:params:xml:ns:yang:yin:1"
+        xmlns:ios-ospf="http://cisco.com/ns/yang/Cisco-IOS-XE-ospf"
+        xmlns:inet="urn:ietf:params:xml:ns:yang:ietf-inet-types"
+        xmlns:ios-types="http://cisco.com/ns/yang/Cisco-IOS-XE-types"
+        xmlns:ios-ifc="http://cisco.com/ns/yang/Cisco-IOS-XE-interface-common"
+        xmlns:ios="http://cisco.com/ns/yang/Cisco-IOS-XE-native">
+  <namespace uri="http://cisco.com/ns/yang/Cisco-IOS-XE-ospf"/>
+  <prefix value="ios-ospf"/>
+  <import module="ietf-inet-types">
+    <prefix value="inet"/>
+  </import>
+  <import module="Cisco-IOS-XE-types">
+    <prefix value="ios-types"/>
+  </import>
+  <import module="Cisco-IOS-XE-interface-common">
+    <prefix value="ios-ifc"/>
+  </import>
+  <import module="Cisco-IOS-XE-native">
+    <prefix value="ios"/>
+  </import>
+  <organization>
+    <text>Cisco Systems, Inc.</text>
+  </organization>
+  <contact>
+    <text>Cisco Systems, Inc.
+Customer Service
+
+Postal: 170 W Tasman Drive
+San Jose, CA 95134
+
+Tel: +1 1800 553-NETS
+
+E-mail: cs-yang@cisco.com</text>
+  </contact>
+  <description>
+    <text>Cisco XE Native Open Shortest Path First (OSPF) Yang model.
+Copyright (c) 2016-2017 by Cisco Systems, Inc.
+All rights reserved.</text>
+  </description>
+  <revision date="2017-11-27">
+    <description>
+      <text>Added Change 25GE name</text>
+    </description>
+  </revision>
+  <revision date="2017-11-16">
+    <description>
+      <text>fix area 0 range &lt;ipv4&gt; &lt;ipv4-mask&gt; issue</text>
+    </description>
+  </revision>
+  <revision date="2017-11-14">
+    <description>
+      <text>Add 40 and 100GE interface</text>
+    </description>
+  </revision>
+  <revision date="2017-10-20">
+    <description>
+      <text>To allow support of ip osfp authentication-key &lt;string&gt; under interface</text>
+    </description>
+  </revision>
+  <revision date="2017-08-18">
+    <description>
+      <text>This revision has changes for new 5gig and 25gig interfaces addition</text>
+    </description>
+  </revision>
+  <revision date="2017-08-15">
+    <description>
+      <text>add full nsf support and ospf support for BDI interfaces</text>
+    </description>
+  </revision>
+  <revision date="2017-04-28">
+    <description>
+      <text>inet:ipv6-prefix changed to ios-types:ipv6-prefix</text>
+    </description>
+  </revision>
+  <revision date="2017-03-28">
+    <description>
+      <text>Added NED Yang Data Model support for MPLS-TE</text>
+    </description>
+  </revision>
+  <revision date="2017-02-07">
+    <description>
+      <text>Initial revision</text>
+    </description>
+  </revision>
+  <typedef name="redist-ospf-external-type">
+    <type name="enumeration">
+      <enum name="1"/>
+      <enum name="2"/>
+    </type>
+  </typedef>
+  <grouping name="authentication-ipsec-grouping">
+    <container name="ipsec">
+      <description>
+        <text>Use IPsec authentication</text>
+      </description>
+      <leaf name="spi">
+        <description>
+          <text>Set the SPI (Security Parameters Index)</text>
+        </description>
+        <type name="uint64">
+          <range value="256..4294967295"/>
+        </type>
+      </leaf>
+      <container name="md5">
+        <description>
+          <text>Use MD5 authentication</text>
+        </description>
+        <container name="key-string">
+          <leaf name="encrypt">
+            <type name="enumeration">
+              <enum name="0"/>
+              <enum name="7"/>
+            </type>
+          </leaf>
+          <leaf name="string">
+            <type name="string"/>
+          </leaf>
+        </container>
+      </container>
+      <container name="sha1">
+        <description>
+          <text>Use SHA-1 authentication</text>
+        </description>
+        <container name="key-string">
+          <leaf name="encrypt">
+            <type name="enumeration">
+              <enum name="0"/>
+              <enum name="7"/>
+            </type>
+          </leaf>
+          <leaf name="string">
+            <type name="string"/>
+          </leaf>
+        </container>
+      </container>
+    </container>
+  </grouping>
+  <grouping name="interface-ospf-neighbor-grouping">
+    <list name="neighbor">
+      <description>
+        <text>OSPF neighbor</text>
+      </description>
+      <ordered-by value="user"/>
+      <must condition="count(*) &gt; 1"/>
+      <key value="id"/>
+      <leaf name="id">
+        <type name="inet:ipv6-address"/>
+      </leaf>
+      <leaf name="cost">
+        <description>
+          <text>OSPF cost for point-to-multipoint neighbor</text>
+        </description>
+        <type name="uint16">
+          <range value="1..65535"/>
+        </type>
+      </leaf>
+      <container name="database-filter">
+        <description>
+          <text>Filter OSPF LSA during synchronization and flooding for point-to-multipoint neighbor</text>
+        </description>
+        <choice name="database">
+          <leaf name="all">
+            <description>
+              <text>Filter all LSA</text>
+            </description>
+            <type name="enumeration">
+              <enum name="out"/>
+            </type>
+          </leaf>
+        </choice>
+      </container>
+      <leaf name="poll-interval">
+        <description>
+          <text>OSPF dead-router polling interval</text>
+        </description>
+        <type name="uint32">
+          <range value="0..65535"/>
+        </type>
+      </leaf>
+      <leaf name="priority">
+        <description>
+          <text>OSPF priority of non-broadcast neighbor</text>
+        </description>
+        <type name="uint8">
+          <range value="0..255"/>
+        </type>
+      </leaf>
+    </list>
+  </grouping>
+  <grouping name="interface-ospf-encryption-grouping">
+    <container name="encryption">
+      <description>
+        <text>Enable encryption</text>
+      </description>
+      <leaf name="null">
+        <description>
+          <text>No IPsec encryption on this interface</text>
+        </description>
+        <type name="empty"/>
+      </leaf>
+      <container name="ipsec">
+        <description>
+          <text>Use IPsec encryption</text>
+        </description>
+        <leaf name="spi">
+          <description>
+            <text>Set the SPI (Security Parameters Index)</text>
+          </description>
+          <type name="uint64"/>
+        </leaf>
+        <leaf name="esp">
+          <description>
+            <text>Use ESP encapsulation</text>
+          </description>
+          <type name="empty"/>
+        </leaf>
+        <container name="ipsec_3des">
+          <description>
+            <text>Use 3DES encryption</text>
+          </description>
+          <container name="key-string">
+            <leaf name="encrypt">
+              <type name="enumeration">
+                <enum name="0"/>
+                <enum name="7"/>
+              </type>
+            </leaf>
+            <leaf name="string">
+              <type name="string"/>
+            </leaf>
+          </container>
+        </container>
+        <container name="aes-cbc">
+          <description>
+            <text>Use AES-CBC encryption</text>
+          </description>
+          <container name="aes-cbc-128">
+            <description>
+              <text>Use 128 bit key</text>
+            </description>
+            <container name="key-string">
+              <leaf name="encrypt">
+                <type name="enumeration">
+                  <enum name="0"/>
+                  <enum name="7"/>
+                </type>
+              </leaf>
+              <leaf name="string">
+                <type name="string"/>
+              </leaf>
+            </container>
+          </container>
+          <container name="aes-192">
+            <description>
+              <text>Use 192 bit key</text>
+            </description>
+            <container name="key-string">
+              <leaf name="encrypt">
+                <type name="enumeration">
+                  <enum name="0"/>
+                  <enum name="7"/>
+                </type>
+              </leaf>
+              <leaf name="string">
+                <type name="string"/>
+              </leaf>
+            </container>
+          </container>
+          <container name="aes-256">
+            <description>
+              <text>Use 256 bit key</text>
+            </description>
+            <container name="key-string">
+              <leaf name="encrypt">
+                <type name="enumeration">
+                  <enum name="0"/>
+                  <enum name="7"/>
+                </type>
+              </leaf>
+              <leaf name="string">
+                <type name="string"/>
+              </leaf>
+            </container>
+          </container>
+        </container>
+      </container>
+    </container>
+  </grouping>
+  <grouping name="interface-ospf-dead-interval-grouping">
+    <leaf name="dead-interval">
+      <description>
+        <text>Interval after which a neighbor is declared dead</text>
+      </description>
+      <type name="uint16">
+        <range value="1..65535"/>
+      </type>
+    </leaf>
+  </grouping>
+  <grouping name="interface-ospf-hello-interval-grouping">
+    <leaf name="hello-interval">
+      <description>
+        <text>Time between HELLO packets</text>
+      </description>
+      <type name="uint32">
+        <range value="1..65535"/>
+      </type>
+    </leaf>
+  </grouping>
+  <grouping name="interface-ospf-prefix-suppression-grouping">
+    <container name="prefix-suppression">
+      <description>
+        <text>OSPF prefix suppression</text>
+      </description>
+      <presence value="true"/>
+      <leaf name="disable">
+        <description>
+          <text>Disable prefix suppression</text>
+        </description>
+        <type name="empty"/>
+      </leaf>
+    </container>
+  </grouping>
+  <grouping name="interface-ospf-priority-grouping">
+    <leaf name="priority">
+      <description>
+        <text>Router priority</text>
+      </description>
+      <type name="uint8">
+        <range value="0..255"/>
+      </type>
+    </leaf>
+  </grouping>
+  <grouping name="interface-ospf-retransmit-interval-grouping">
+    <leaf name="retransmit-interval">
+      <description>
+        <text>Time between retransmitting lost link state advertisements</text>
+      </description>
+      <type name="uint32">
+        <range value="1..65535"/>
+      </type>
+    </leaf>
+  </grouping>
+  <grouping name="interface-ospf-transmit-delay-grouping">
+    <leaf name="transmit-delay">
+      <description>
+        <text>Link state transmit delay</text>
+      </description>
+      <type name="uint32">
+        <range value="1..65535"/>
+      </type>
+    </leaf>
+  </grouping>
+  <grouping name="interface-ospf-bfd-grouping">
+    <container name="bfd">
+      <description>
+        <text>Enable BFD on this interface</text>
+      </description>
+      <presence value="true"/>
+      <leaf name="disable">
+        <description>
+          <text>Disable BFD on this interface</text>
+        </description>
+        <type name="empty"/>
+      </leaf>
+    </container>
+  </grouping>
+  <grouping name="interface-ospf-network-grouping">
+    <container name="network">
+      <description>
+        <text>Network type</text>
+      </description>
+      <leaf name="broadcast">
+        <description>
+          <text>Specify OSPF broadcast multi-access network</text>
+        </description>
+        <type name="empty"/>
+      </leaf>
+      <leaf name="manet">
+        <description>
+          <text>Specify MANET OSPF interface type</text>
+        </description>
+        <type name="empty"/>
+      </leaf>
+      <leaf name="non-broadcast">
+        <description>
+          <text>Specify OSPF NBMA network</text>
+        </description>
+        <type name="empty"/>
+      </leaf>
+      <container name="point-to-multipoint">
+        <description>
+          <text>Specify OSPF point-to-multipoint network</text>
+        </description>
+        <presence value="true"/>
+        <leaf name="non-broadcast">
+          <description>
+            <text>Specify non-broadcast point-to-mpoint network</text>
+          </description>
+          <type name="empty"/>
+        </leaf>
+      </container>
+      <leaf name="point-to-point">
+        <description>
+          <text>Specify OSPF point-to-point network</text>
+        </description>
+        <type name="empty"/>
+      </leaf>
+    </container>
+  </grouping>
+  <grouping name="config-interface-ip-ospf-grouping">
+    <container name="ospf">
+      <description>
+        <text>OSPF interface commands</text>
+      </description>
+      <list name="process-id">
+        <key value="id"/>
+        <leaf name="id">
+          <type name="uint16"/>
+        </leaf>
+        <leaf name="area">
+          <type name="ios-types:ospf-area-type"/>
+        </leaf>
+        <leaf name="secondaries">
+          <description>
+            <text>Include or exclude secondary IP addresses</text>
+          </description>
+          <type name="empty"/>
+        </leaf>
+        <leaf name="none">
+          <description>
+            <text>Do not include secondary IP addresses</text>
+          </description>
+          <type name="empty"/>
+        </leaf>
+      </list>
+      <container name="authentication">
+        <description>
+          <text>Enable authentication</text>
+        </description>
+        <presence value="Enable authentication"/>
+        <container name="key-chain">
+          <description>
+            <text>Use a key-chain for cryptographic authentication keys</text>
+          </description>
+          <leaf name="name">
+            <type name="string"/>
+          </leaf>
+        </container>
+        <leaf name="message-digest">
+          <description>
+            <text>Use message-digest authentication</text>
+          </description>
+          <type name="empty"/>
+        </leaf>
+        <leaf name="null">
+          <description>
+            <text>Use no authentication</text>
+          </description>
+          <type name="empty"/>
+        </leaf>
+      </container>
+      <uses name="ospf-authentication-key-grouping"/>
+      <leaf name="network">
+        <description>
+          <text>Network type</text>
+        </description>
+        <type name="enumeration">
+          <enum name="broadcast"/>
+          <enum name="non-broadcast"/>
+          <enum name="point-to-multipoint"/>
+          <enum name="point-to-point"/>
+        </type>
+      </leaf>
+      <uses name="interface-ospf-bfd-grouping"/>
+      <leaf name="cost">
+        <description>
+          <text>Interface cost</text>
+        </description>
+        <type name="uint16">
+          <range value="1..65535"/>
+        </type>
+      </leaf>
+      <container name="database-filter">
+        <description>
+          <text>Filter OSPF LSA during synchronization and flooding</text>
+        </description>
+        <leaf name="all">
+          <description>
+            <text>Filter all LSA</text>
+          </description>
+          <type name="empty"/>
+        </leaf>
+        <leaf name="out">
+          <description>
+            <text>Outgoing LSA</text>
+          </description>
+          <type name="empty"/>
+        </leaf>
+      </container>
+      <container name="dead-interval">
+        <description>
+          <text>Interval after which a neighbor is declared dead</text>
+        </description>
+        <leaf name="value">
+          <type name="uint32">
+            <range value="1..65535"/>
+          </type>
+        </leaf>
+        <container name="minimal">
+          <description>
+            <text>Set to 1 second</text>
+          </description>
+          <leaf name="hello-multiplier">
+            <description>
+              <text>Set multiplier for Hellos</text>
+            </description>
+            <type name="uint8"/>
+          </leaf>
+        </container>
+      </container>
+      <container name="demand-circuit">
+        <description>
+          <text>OSPF Demand Circuit</text>
+        </description>
+        <presence value="true"/>
+        <leaf name="ignore">
+          <description>
+            <text>Ignore demand circuit auto-negotiation requests</text>
+          </description>
+          <type name="empty"/>
+        </leaf>
+      </container>
+      <container name="fast-reroute">
+        <description>
+          <text>LFA FastReroute parameters</text>
+        </description>
+        <container name="per-prefix">
+          <description>
+            <text>Per-prefix LFA FRR parameters</text>
+          </description>
+          <container name="candidate">
+            <description>
+              <text>If interface can be protecting</text>
+            </description>
+            <presence value="true"/>
+            <leaf name="disable">
+              <description>
+                <text>Disable LFA FRR interface protection</text>
+              </description>
+              <type name="empty"/>
+            </leaf>
+          </container>
+          <container name="protection">
+            <description>
+              <text>If interface can be protected</text>
+            </description>
+            <presence value="true"/>
+            <leaf name="disable">
+              <description>
+                <text>Disable LFA FRR interface protection</text>
+              </description>
+              <type name="empty"/>
+            </leaf>
+          </container>
+        </container>
+      </container>
+      <leaf name="flood-reduction">
+        <description>
+          <text>OSPF Flood Reduction</text>
+        </description>
+        <type name="empty"/>
+      </leaf>
+      <uses name="interface-ospf-hello-interval-grouping"/>
+      <container name="lls">
+        <description>
+          <text>Link-local Signaling (LLS) support</text>
+        </description>
+        <presence value="true"/>
+        <leaf name="disable">
+          <description>
+            <text>disable LLS</text>
+          </description>
+          <type name="empty"/>
+        </leaf>
+      </container>
+      <list name="message-digest-key">
+        <description>
+          <text>Set message digest key</text>
+        </description>
+        <key value="id"/>
+        <leaf name="id">
+          <type name="uint8">
+            <range value="1 .. 255"/>
+          </type>
+        </leaf>
+        <container name="md5">
+          <description>
+            <text>Use MD5 algorithm</text>
+          </description>
+          <leaf name="auth-type">
+            <type name="uint8">
+              <range value="0 .. 7"/>
+            </type>
+          </leaf>
+          <leaf name="auth-key">
+            <type name="string"/>
+          </leaf>
+        </container>
+      </list>
+      <leaf name="mtu-ignore">
+        <description>
+          <text>Ignores the MTU in DBD packets</text>
+        </description>
+        <type name="empty"/>
+      </leaf>
+      <container name="multi-area">
+        <description>
+          <text>Set the OSPF multi-area ID</text>
+        </description>
+        <leaf name="id">
+          <type name="union">
+            <type name="uint32">
+              <range value="0..4294967295"/>
+            </type>
+            <type name="inet:ipv4-address"/>
+          </type>
+        </leaf>
+        <leaf name="cost">
+          <description>
+            <text>Interface cost</text>
+          </description>
+          <type name="uint32">
+            <range value="1..65535"/>
+          </type>
+        </leaf>
+      </container>
+      <uses name="interface-ospf-prefix-suppression-grouping"/>
+      <uses name="interface-ospf-priority-grouping"/>
+      <leaf name="resync-timeout">
+        <description>
+          <text>Interval after which adjacency is reset if oob-resync is not started</text>
+        </description>
+        <type name="uint32">
+          <range value="1..65535"/>
+        </type>
+      </leaf>
+      <uses name="interface-ospf-retransmit-interval-grouping"/>
+      <leaf name="shutdown">
+        <description>
+          <text>Set OSPF protocol's state to disable under current interface</text>
+        </description>
+        <type name="empty"/>
+      </leaf>
+      <uses name="interface-ospf-transmit-delay-grouping"/>
+      <container name="ttl-security">
+        <description>
+          <text>TTL security check</text>
+        </description>
+        <presence value="true"/>
+        <leaf name="diable">
+          <description>
+            <text>disable TTL security check</text>
+          </description>
+          <type name="empty"/>
+        </leaf>
+        <leaf name="hops">
+          <description>
+            <text>IP hops</text>
+          </description>
+          <type name="uint8">
+            <range value="1..254"/>
+          </type>
+        </leaf>
+      </container>
+    </container>
+  </grouping>
+  <grouping name="config-interface-ipv6-ospf-grouping">
+    <container name="ospf">
+      <description>
+        <text>OSPF interface commands</text>
+      </description>
+      <list name="process">
+        <key value="id"/>
+        <leaf name="id">
+          <type name="uint16">
+            <range value="1..65535"/>
+          </type>
+        </leaf>
+        <leaf name="area">
+          <description>
+            <text>Set the OSPF area ID</text>
+          </description>
+          <type name="union">
+            <type name="uint32">
+              <range value="0..4294967295"/>
+            </type>
+            <type name="inet:ipv4-address"/>
+          </type>
+        </leaf>
+        <leaf name="instance">
+          <description>
+            <text>Set the OSPF instance</text>
+          </description>
+          <type name="union">
+            <type name="uint8">
+              <range value="0..31"/>
+            </type>
+            <type name="uint8">
+              <range value="32..255"/>
+            </type>
+          </type>
+        </leaf>
+      </list>
+      <container name="authentication">
+        <description>
+          <text>Enable authentication</text>
+        </description>
+        <leaf name="null">
+          <description>
+            <text>Use no authentication</text>
+          </description>
+          <type name="empty"/>
+        </leaf>
+        <uses name="authentication-ipsec-grouping"/>
+      </container>
+      <uses name="interface-ospf-bfd-grouping"/>
+      <leaf name="cost">
+        <description>
+          <text>Route cost of this interface</text>
+        </description>
+        <type name="uint16">
+          <range value="1..65535"/>
+        </type>
+      </leaf>
+      <container name="database-filter">
+        <description>
+          <text>Filter OSPF LSA during synchronization and flooding</text>
+        </description>
+        <choice name="database">
+          <leaf name="all">
+            <description>
+              <text>Filter all LSA</text>
+            </description>
+            <type name="enumeration">
+              <enum name="out"/>
+            </type>
+          </leaf>
+          <leaf name="disable">
+            <description>
+              <text>Disable LSA Filter on this interface</text>
+            </description>
+            <type name="empty"/>
+          </leaf>
+        </choice>
+      </container>
+      <uses name="interface-ospf-dead-interval-grouping"/>
+      <container name="demand-circuit">
+        <description>
+          <text>OSPF demand circuit</text>
+        </description>
+        <presence value="true"/>
+        <leaf name="disable">
+          <description>
+            <text>Disable demand circuit on this interface</text>
+          </description>
+          <type name="empty"/>
+        </leaf>
+        <leaf name="ignore">
+          <description>
+            <text>Ignore demand circuit auto-negotiation requests</text>
+          </description>
+          <type name="empty"/>
+        </leaf>
+      </container>
+      <uses name="interface-ospf-encryption-grouping"/>
+      <container name="flood-reduction">
+        <description>
+          <text>OSPF Flood Reduction</text>
+        </description>
+        <presence value="true"/>
+        <leaf name="disable">
+          <description>
+            <text>Disable Flood Reduction on this interface</text>
+          </description>
+          <type name="empty"/>
+        </leaf>
+      </container>
+      <uses name="interface-ospf-hello-interval-grouping"/>
+      <container name="mtu-ignore">
+        <description>
+          <text>Ignores the MTU in DBD packets</text>
+        </description>
+        <presence value="true"/>
+        <leaf name="disable">
+          <description>
+            <text>Disable Ingore MTU on this interface</text>
+          </description>
+          <type name="empty"/>
+        </leaf>
+      </container>
+      <uses name="interface-ospf-neighbor-grouping"/>
+      <uses name="interface-ospf-network-grouping"/>
+      <uses name="interface-ospf-priority-grouping"/>
+      <uses name="interface-ospf-retransmit-interval-grouping"/>
+      <container name="shutdown">
+        <description>
+          <text>Shut down the interface in OSPFv3</text>
+        </description>
+        <presence value="true"/>
+        <leaf name="disable">
+          <description>
+            <text>Disable inherited shutdown</text>
+          </description>
+          <type name="empty"/>
+        </leaf>
+      </container>
+      <uses name="interface-ospf-transmit-delay-grouping"/>
+    </container>
+  </grouping>
+  <grouping name="ospf-ospfv3-common-address-family-grouping">
+    <container name="capability">
+      <description>
+        <text>Enable specific OSPF feature</text>
+      </description>
+      <leaf name="capability-type">
+        <type name="enumeration">
+          <enum name="lls"/>
+          <enum name="opaque"/>
+          <enum name="transit"/>
+          <enum name="vrf-lite"/>
+        </type>
+      </leaf>
+    </container>
+    <container name="compatible">
+      <description>
+        <text>OSPF compatibility list</text>
+      </description>
+      <leaf name="rfc1583">
+        <description>
+          <text>Compatible with RFC 1583</text>
+        </description>
+        <type name="empty"/>
+      </leaf>
+      <leaf name="rfc1587">
+        <description>
+          <text>Compatible with RFC 1587</text>
+        </description>
+        <type name="empty"/>
+      </leaf>
+      <leaf name="rfc5243">
+        <description>
+          <text>Compatible with RFC 5243</text>
+        </description>
+        <type name="empty"/>
+      </leaf>
+    </container>
+    <container name="default-information">
+      <description>
+        <text>Control distribution of default information</text>
+      </description>
+      <container name="originate">
+        <description>
+          <text>Distribute a default route</text>
+        </description>
+        <presence value="Distribute a default route"/>
+        <leaf name="always">
+          <description>
+            <text>Always advertise default route</text>
+          </description>
+          <type name="empty"/>
+        </leaf>
+        <leaf name="metric">
+          <description>
+            <text>OSPF default metric</text>
+          </description>
+          <type name="uint32">
+            <range value="0 .. 16777214"/>
+          </type>
+        </leaf>
+        <leaf name="metric-type">
+          <description>
+            <text>OSPF metric type for default routes</text>
+          </description>
+          <type name="ios-types:ospf-metric-type"/>
+        </leaf>
+        <leaf name="route-map">
+          <description>
+            <text>Route map reference</text>
+          </description>
+          <type name="string"/>
+        </leaf>
+      </container>
+    </container>
+    <leaf name="default-metric">
+      <description>
+        <text>Set metric of redistributed routes</text>
+      </description>
+      <type name="uint32">
+        <range value="1 .. 16777214"/>
+      </type>
+    </leaf>
+    <container name="discard-route">
+      <description>
+        <text>Enable or disable discard-route installation</text>
+      </description>
+      <presence value="Enable or disable discard-route installation"/>
+      <leaf name="external">
+        <description>
+          <text>Discard route for redistributed summarised routes</text>
+        </description>
+        <type name="empty"/>
+      </leaf>
+      <leaf name="internal">
+        <description>
+          <text>Discard route for summarised internal routes</text>
+        </description>
+        <type name="empty"/>
+      </leaf>
+      <leaf name="metric">
+        <type name="uint32">
+          <range value="1 .. 255"/>
+        </type>
+      </leaf>
+    </container>
+    <container name="distance">
+      <description>
+        <text>Define an administrative distance</text>
+      </description>
+      <container name="ospf-distance">
+        <leaf name="distance">
+          <type name="uint32">
+            <range value="1 .. 255"/>
+          </type>
+        </leaf>
+        <leaf name="ip">
+          <type name="inet:ipv4-address"/>
+        </leaf>
+        <leaf name="wildcard">
+          <type name="inet:ipv4-address"/>
+        </leaf>
+        <leaf name="acl-name">
+          <type name="ios-types:access-list-standard-id-type"/>
+        </leaf>
+      </container>
+      <container name="ospf">
+        <description>
+          <text>OSPF routes Administrative distance</text>
+        </description>
+        <leaf name="external">
+          <description>
+            <text>External routes</text>
+          </description>
+          <type name="uint32">
+            <range value="1 .. 255"/>
+          </type>
+        </leaf>
+        <leaf name="inter-area">
+          <description>
+            <text>Inter-area routes</text>
+          </description>
+          <type name="uint32">
+            <range value="1 .. 255"/>
+          </type>
+        </leaf>
+        <leaf name="intra-area">
+          <description>
+            <text>Intra-area routes</text>
+          </description>
+          <type name="uint32">
+            <range value="1 .. 255"/>
+          </type>
+        </leaf>
+      </container>
+    </container>
+    <leaf name="maximum-paths">
+      <description>
+        <text>Forward packets over multiple paths</text>
+      </description>
+      <type name="uint32">
+        <range value="1 .. 32"/>
+      </type>
+    </leaf>
+    <container name="redistribute">
+      <description>
+        <text>Redistribute information from another routing protocol</text>
+      </description>
+      <uses name="ospf-redistribute-top-grouping"/>
+      <container name="maximum-prefix">
+        <description>
+          <text>Maximum number of prefixes redistributed to protocol</text>
+        </description>
+        <leaf name="number">
+          <type name="uint32">
+            <range value="1 .. 4294967295"/>
+          </type>
+        </leaf>
+        <container name="threshold-warning-only-container">
+          <leaf name="threshold">
+            <type name="uint32">
+              <range value="1 .. 100"/>
+            </type>
+          </leaf>
+          <leaf name="warning-only">
+            <description>
+              <text>Only give warning message when limit is exceeded</text>
+            </description>
+            <type name="empty"/>
+          </leaf>
+        </container>
+      </container>
+      <container name="vrf">
+        <description>
+          <text>Specify a source VRF</text>
+        </description>
+        <list name="non-global-vrf">
+          <key value="name"/>
+          <leaf name="name">
+            <type name="string"/>
+          </leaf>
+          <uses name="ospf-redistribute-top-grouping"/>
+        </list>
+        <container name="global">
+          <description>
+            <text>global VRF</text>
+          </description>
+          <uses name="ospf-redistribute-top-grouping"/>
+        </container>
+      </container>
+    </container>
+  </grouping>
+  <grouping name="ospf-ospfv3-common-grouping">
+    <list name="area">
+      <description>
+        <text>OSPF area parameters</text>
+      </description>
+      <key value="id"/>
+      <leaf name="id">
+        <type name="ios-types:ospf-area-type"/>
+      </leaf>
+      <container name="authentication">
+        <description>
+          <text>Enable authentication</text>
+        </description>
+        <presence value="true"/>
+        <leaf name="message-digest">
+          <description>
+            <text>Use message-digest authentication</text>
+          </description>
+          <type name="empty"/>
+        </leaf>
+      </container>
+      <container name="capability">
+        <description>
+          <text>Enable area specific capability</text>
+        </description>
+        <leaf name="default-exclusion">
+          <description>
+            <text>Enable exclusion of links from base topology</text>
+          </description>
+          <type name="empty"/>
+        </leaf>
+      </container>
+      <leaf name="default-cost">
+        <description>
+          <text>Set the summary default-cost of a NSSA/stub area</text>
+        </description>
+        <type name="uint32">
+          <range value="0 .. 16777215"/>
+        </type>
+      </leaf>
+      <list name="filter-list">
+        <description>
+          <text>Filter networks between OSPF areas</text>
+        </description>
+        <key value="in-out"/>
+        <leaf name="in-out">
+          <type name="enumeration">
+            <enum name="in"/>
+            <enum name="out"/>
+          </type>
+        </leaf>
+        <leaf name="prefix">
+          <mandatory value="true"/>
+          <description>
+            <text>Filter prefixes between OSPF areas</text>
+          </description>
+          <type name="string"/>
+        </leaf>
+      </list>
+      <container name="nssa">
+        <description>
+          <text>Specify a NSSA area</text>
+        </description>
+        <presence value="Specify a NSSA area"/>
+        <container name="default-information-originate">
+          <description>
+            <text>Originate Type 7 default into NSSA area</text>
+          </description>
+          <presence value="Originate Type 7 default into NSSA area"/>
+          <leaf name="metric">
+            <description>
+              <text>OSPF default metric</text>
+            </description>
+            <type name="int32">
+              <range value="0 .. 16777214"/>
+            </type>
+          </leaf>
+          <leaf name="metric-type">
+            <description>
+              <text>OSPF metric type for default routes</text>
+            </description>
+            <type name="ios-types:ospf-metric-type"/>
+          </leaf>
+          <leaf name="no-ext-capability">
+            <description>
+              <text>Do not send domain specific capabilities into NSSA</text>
+            </description>
+            <type name="empty"/>
+          </leaf>
+          <leaf name="no-redistribution">
+            <description>
+              <text>No redistribution into this NSSA area</text>
+            </description>
+            <type name="empty"/>
+          </leaf>
+          <leaf name="no-summary">
+            <description>
+              <text>Do not send summary LSA into NSSA</text>
+            </description>
+            <type name="empty"/>
+          </leaf>
+          <leaf name="nssa-only">
+            <description>
+              <text>Limit default advertisement to this NSSA area</text>
+            </description>
+            <type name="empty"/>
+          </leaf>
+          <container name="translate">
+            <description>
+              <text>Translate LSA</text>
+            </description>
+            <container name="type7">
+              <description>
+                <text>From Type 7 to Type 5</text>
+              </description>
+              <leaf name="always">
+                <description>
+                  <text>Always translate LSAs on this ABR</text>
+                </description>
+                <type name="empty"/>
+              </leaf>
+              <leaf name="suppress-fa">
+                <description>
+                  <text>Suppress forwarding address in translated LSAs</text>
+                </description>
+                <type name="empty"/>
+              </leaf>
+            </container>
+          </container>
+        </container>
+        <leaf name="no-ext-capability">
+          <description>
+            <text>Do not send domain specific capabilities into NSSA</text>
+          </description>
+          <type name="empty"/>
+        </leaf>
+        <leaf name="no-redistribution">
+          <description>
+            <text>No redistribution into this NSSA area</text>
+          </description>
+          <type name="empty"/>
+        </leaf>
+        <leaf name="no-summary">
+          <description>
+            <text>Do not send summary LSA into NSSA</text>
+          </description>
+          <type name="empty"/>
+        </leaf>
+        <leaf name="nssa-only">
+          <description>
+            <text>Limit default advertisement to this NSSA area</text>
+          </description>
+          <type name="empty"/>
+        </leaf>
+        <container name="translate">
+          <description>
+            <text>Translate LSA</text>
+          </description>
+          <container name="type7">
+            <description>
+              <text>From Type 7 to Type 5</text>
+            </description>
+            <leaf name="always">
+              <description>
+                <text>Always translate LSAs on this ABR</text>
+              </description>
+              <type name="empty"/>
+            </leaf>
+            <leaf name="suppress-fa">
+              <description>
+                <text>Suppress forwarding address in translated LSAs</text>
+              </description>
+              <type name="empty"/>
+            </leaf>
+          </container>
+        </container>
+      </container>
+      <container name="ipv4-range">
+        <list name="range">
+          <description>
+            <text>Summarize routes matching address/mask (border routers only)</text>
+          </description>
+          <key value="ip mask"/>
+          <leaf name="ip">
+            <type name="inet:ipv4-address"/>
+          </leaf>
+          <leaf name="mask">
+            <type name="inet:ipv4-address"/>
+          </leaf>
+          <choice name="advertise-choice">
+            <leaf name="advertise">
+              <description>
+                <text>Advertise this range (default)</text>
+              </description>
+              <type name="empty"/>
+            </leaf>
+            <leaf name="not-advertise">
+              <description>
+                <text>DoNotAdvertise this range</text>
+              </description>
+              <type name="empty"/>
+            </leaf>
+          </choice>
+          <leaf name="cost">
+            <description>
+              <text>User specified metric for this range</text>
+            </description>
+            <type name="uint32">
+              <range value="0 .. 16777215"/>
+            </type>
+          </leaf>
+        </list>
+      </container>
+      <container name="ipv6-range">
+        <list name="range">
+          <description>
+            <text>Summarize routes matching address/mask (border routers only)</text>
+          </description>
+          <key value="ip"/>
+          <leaf name="ip">
+            <type name="ios-types:ipv6-prefix"/>
+          </leaf>
+          <choice name="advertise-choice">
+            <leaf name="advertise">
+              <description>
+                <text>Advertise this range (default)</text>
+              </description>
+              <type name="empty"/>
+            </leaf>
+            <leaf name="not-advertise">
+              <description>
+                <text>DoNotAdvertise this range</text>
+              </description>
+              <type name="empty"/>
+            </leaf>
+          </choice>
+          <leaf name="cost">
+            <description>
+              <text>User specified metric for this range</text>
+            </description>
+            <type name="uint32">
+              <range value="0 .. 16777215"/>
+            </type>
+          </leaf>
+        </list>
+      </container>
+      <list name="sham-link">
+        <description>
+          <text>Define a sham link and its parameters</text>
+        </description>
+        <key value="source dest"/>
+        <leaf name="source">
+          <type name="inet:ip-address"/>
+        </leaf>
+        <leaf name="dest">
+          <type name="inet:ip-address"/>
+        </leaf>
+        <leaf name="cost">
+          <description>
+            <text>Associate a cost with the sham-link</text>
+          </description>
+          <type name="uint16">
+            <range value="0 .. 65535"/>
+          </type>
+        </leaf>
+        <container name="ttl-security">
+          <description>
+            <text>TTL security check</text>
+          </description>
+          <leaf name="hops">
+            <description>
+              <text>IP hops</text>
+            </description>
+            <type name="uint8"/>
+          </leaf>
+        </container>
+      </list>
+      <container name="stub">
+        <description>
+          <text>Specify a stub area</text>
+        </description>
+        <presence value="Specify a stub area"/>
+        <leaf name="no-ext-capability">
+          <description>
+            <text>Do not send domain specific capabilities into stub area</text>
+          </description>
+          <type name="empty"/>
+        </leaf>
+        <leaf name="no-summary">
+          <description>
+            <text>Do not send summary LSA into stub area</text>
+          </description>
+          <type name="empty"/>
+        </leaf>
+      </container>
+      <list name="virtual-link">
+        <description>
+          <text>Define a virtual link and its parameters</text>
+        </description>
+        <key value="id"/>
+        <leaf name="id">
+          <type name="inet:ip-address"/>
+        </leaf>
+        <container name="authentication">
+          <description>
+            <text>Set authentication type</text>
+          </description>
+          <uses name="ospf-area-virtual-link-grouping"/>
+          <container name="key-chain">
+            <description>
+              <text>Use a key-chain for cryptographic authentication keys</text>
+            </description>
+            <leaf name="name">
+              <type name="string"/>
+            </leaf>
+            <uses name="ospf-area-virtual-link-grouping"/>
+          </container>
+          <container name="message-digest">
+            <description>
+              <text>Message-digest authentication</text>
+            </description>
+            <uses name="ospf-area-virtual-link-grouping"/>
+          </container>
+          <leaf name="null">
+            <description>
+              <text>No authentication</text>
+            </description>
+            <type name="empty"/>
+          </leaf>
+        </container>
+        <container name="hello-interval">
+          <description>
+            <text>Hello packet interval</text>
+          </description>
+          <leaf name="hello-interval-value">
+            <type name="int32">
+              <range value="1 .. 8192"/>
+            </type>
+          </leaf>
+        </container>
+        <container name="dead-interval">
+          <description>
+            <text>Dead router detection time</text>
+          </description>
+          <leaf name="dead-interval-value">
+            <type name="uint16">
+              <range value="1 .. 8192"/>
+            </type>
+          </leaf>
+        </container>
+        <container name="retransmit-interval">
+          <description>
+            <text>LSA retransmit interval</text>
+          </description>
+          <leaf name="retransmit-interval-value">
+            <type name="uint16">
+              <range value="1 .. 8192"/>
+            </type>
+          </leaf>
+        </container>
+        <container name="transmit-delay">
+          <description>
+            <text>LSA transmission delay</text>
+          </description>
+          <leaf name="transmit-delay-value">
+            <type name="uint16">
+              <range value="1 .. 8192"/>
+            </type>
+          </leaf>
+        </container>
+        <container name="topology">
+          <description>
+            <text>Disable virtual link on topology</text>
+          </description>
+          <leaf name="disable">
+            <description>
+              <text>Disable virtual link</text>
+            </description>
+            <type name="empty"/>
+          </leaf>
+        </container>
+        <container name="ttl-security">
+          <description>
+            <text>TTL security check</text>
+          </description>
+          <leaf name="hops">
+            <description>
+              <text>IP hops</text>
+            </description>
+            <type name="uint8">
+              <range value="1..254"/>
+            </type>
+          </leaf>
+        </container>
+        <uses name="ospf-area-virtual-link-grouping"/>
+      </list>
+    </list>
+    <container name="auto-cost">
+      <description>
+        <text>Calculate OSPF interface cost according to bandwidth</text>
+      </description>
+      <presence value="Calculate OSPF interface cost according to bandwidth"/>
+      <leaf name="reference-bandwidth">
+        <description>
+          <text>Use reference bandwidth method to assign OSPF cost</text>
+        </description>
+        <type name="uint32">
+          <range value="1 .. 4294967"/>
+        </type>
+      </leaf>
+    </container>
+    <container name="event-log">
+      <description>
+        <text>OSPF Event Logging</text>
+      </description>
+      <presence value="true"/>
+      <leaf name="one-shot">
+        <description>
+          <text>Disable Logging When Log Buffer Becomes Full</text>
+        </description>
+        <type name="empty"/>
+      </leaf>
+      <leaf name="pause">
+        <description>
+          <text>Pause Event Logging</text>
+        </description>
+        <type name="empty"/>
+      </leaf>
+      <leaf name="size">
+        <description>
+          <text>Maximum Number of Events Stored in the Event Log</text>
+        </description>
+        <type name="uint32">
+          <range value="1..65534"/>
+        </type>
+      </leaf>
+    </container>
+    <container name="bfd">
+      <description>
+        <text>BFD configuration commands</text>
+      </description>
+      <leaf name="all-interfaces">
+        <description>
+          <text>Enable BFD on all interfaces</text>
+        </description>
+        <type name="empty"/>
+      </leaf>
+    </container>
+    <container name="interface-id">
+      <description>
+        <text>Source of the interface ID</text>
+      </description>
+      <leaf name="snmp-if-index">
+        <description>
+          <text>SNMP MIB ifIndex</text>
+        </description>
+        <type name="empty"/>
+      </leaf>
+    </container>
+    <container name="log-adjacency-changes">
+      <description>
+        <text>Log changes in adjacency state</text>
+      </description>
+      <presence value="true"/>
+      <leaf name="detail">
+        <description>
+          <text>Log all state changes</text>
+        </description>
+        <type name="empty"/>
+      </leaf>
+    </container>
+    <container name="max-lsa">
+      <description>
+        <text>maximum number of LSAs OSPF process will receive</text>
+      </description>
+      <leaf name="number">
+        <type name="uint32">
+          <range value="1 .. 4294967294"/>
+        </type>
+      </leaf>
+      <leaf name="threshold-value">
+        <type name="uint32">
+          <range value="1 .. 100"/>
+        </type>
+      </leaf>
+      <leaf name="ignore-count">
+        <description>
+          <text>maximum number of times adjacencies can be suppressed</text>
+        </description>
+        <type name="uint32">
+          <range value="1 .. 65534"/>
+        </type>
+      </leaf>
+      <leaf name="ignore-time">
+        <description>
+          <text>time during which all adjacencies are suppressed</text>
+        </description>
+        <type name="uint32">
+          <range value="1 .. 17895"/>
+        </type>
+      </leaf>
+      <leaf name="reset-time">
+        <description>
+          <text>time after which ignore-count is reset to zero</text>
+        </description>
+        <type name="uint32">
+          <range value="2 .. 35791"/>
+        </type>
+      </leaf>
+      <leaf name="warning-only">
+        <description>
+          <text>Only give warning message when limit is exceeded</text>
+        </description>
+        <type name="empty"/>
+      </leaf>
+    </container>
+    <container name="max-metric">
+      <description>
+        <text>Set maximum metric</text>
+      </description>
+      <container name="router-lsa">
+        <description>
+          <text>Maximum metric in self-originated router-LSAs</text>
+        </description>
+        <presence value="Maximum metric in self-originated router-LSAs"/>
+        <container name="external-lsa">
+          <presence value="Override external-lsa metric with max-metric value"/>
+          <description>
+            <text>Override external-lsa metric with max-metric value</text>
+          </description>
+          <leaf name="metric">
+            <type name="uint32">
+              <range value="1 .. 16777215"/>
+            </type>
+          </leaf>
+        </container>
+        <leaf name="include-stub">
+          <description>
+            <text>Set maximum metric for stub links in router-LSAs</text>
+          </description>
+          <type name="empty"/>
+        </leaf>
+        <container name="on-startup">
+          <description>
+            <text>Set maximum metric temporarily after reboot</text>
+          </description>
+          <presence value="Set maximum metric temporarily after reboot"/>
+          <choice name="time-wait-for-bgp-choice">
+            <leaf name="time">
+              <type name="uint32">
+                <range value="5 .. 86400"/>
+              </type>
+            </leaf>
+            <leaf name="wait-for-bgp">
+              <description>
+                <text>Let BGP decide when to originate router-LSA with normal metric</text>
+              </description>
+              <type name="empty"/>
+            </leaf>
+          </choice>
+        </container>
+        <container name="summary-lsa">
+          <description>
+            <text>Override summary-lsa metric with max-metric value</text>
+          </description>
+          <presence value="Override summary-lsa metric with max-metric value"/>
+          <leaf name="metric">
+            <type name="uint32">
+              <range value="1 .. 16777215"/>
+            </type>
+          </leaf>
+        </container>
+      </container>
+    </container>
+    <uses name="ios-ifc:passive-interface-grouping"/>
+    <container name="queue-depth">
+      <description>
+        <text>OSPF Hello/Router process queue depth</text>
+      </description>
+      <container name="hello">
+        <description>
+          <text>OSPF Hello process queue depth</text>
+        </description>
+        <uses name="queue-depth-grouping"/>
+      </container>
+      <container name="update">
+        <description>
+          <text>OSPF Router process queue depth</text>
+        </description>
+        <uses name="queue-depth-grouping"/>
+      </container>
+    </container>
+    <container name="timers">
+      <description>
+        <text>Adjust routing timers</text>
+      </description>
+      <container name="lsa">
+        <description>
+          <text>OSPF LSA timers</text>
+        </description>
+        <leaf name="arrival">
+          <description>
+            <text>OSPF LSA arrival timer</text>
+          </description>
+          <type name="uint32">
+            <range value="0 .. 600000"/>
+          </type>
+        </leaf>
+      </container>
+      <container name="pacing">
+        <description>
+          <text>OSPF pacing timers</text>
+        </description>
+        <leaf name="flood">
+          <description>
+            <text>OSPF flood pacing timer</text>
+          </description>
+          <type name="uint32">
+            <range value="5 .. 100"/>
+          </type>
+        </leaf>
+        <leaf name="lsa-group">
+          <description>
+            <text>OSPF LSA group pacing timer</text>
+          </description>
+          <type name="uint32">
+            <range value="10 .. 1800"/>
+          </type>
+        </leaf>
+        <leaf name="retransmission">
+          <description>
+            <text>OSPF retransmission pacing timer</text>
+          </description>
+          <type name="uint32">
+            <range value="5 .. 200"/>
+          </type>
+        </leaf>
+      </container>
+      <container name="throttle">
+        <description>
+          <text>OSPF throttle timers</text>
+        </description>
+        <container name="lsa">
+          <description>
+            <text>OSPF LSA throttle timers</text>
+          </description>
+          <container name="all">
+            <description>
+              <text>For all type of OSPF LSAs</text>
+            </description>
+            <leaf name="delay">
+              <type name="uint32">
+                <range value="0 .. 600000"/>
+              </type>
+            </leaf>
+            <leaf name="min-delay">
+              <type name="uint32">
+                <range value="0 .. 600000"/>
+              </type>
+            </leaf>
+            <leaf name="max-delay">
+              <type name="uint32">
+                <range value="0 .. 600000"/>
+              </type>
+            </leaf>
+          </container>
+        </container>
+        <container name="spf">
+          <description>
+            <text>OSPF SPF throttle timers</text>
+          </description>
+          <leaf name="delay">
+            <type name="uint32">
+              <range value="0 .. 600000"/>
+            </type>
+          </leaf>
+          <leaf name="min-delay">
+            <type name="uint32">
+              <range value="0 .. 600000"/>
+            </type>
+          </leaf>
+          <leaf name="max-delay">
+            <type name="uint32">
+              <range value="0 .. 600000"/>
+            </type>
+          </leaf>
+        </container>
+      </container>
+    </container>
+    <leaf name="router-id">
+      <description>
+        <text>Override configured router identifier (peers will reset)</text>
+      </description>
+      <type name="inet:ipv4-address"/>
+    </leaf>
+    <leaf name="nsr">
+      <description>
+        <text>Enable non-stop routing</text>
+      </description>
+      <type name="empty"/>
+    </leaf>
+    <container name="traffic-share">
+      <description>
+        <text>How to compute traffic share over alternate paths</text>
+      </description>
+      <leaf name="min">
+        <description>
+          <text>All traffic shared among min metric paths</text>
+        </description>
+        <type name="empty"/>
+      </leaf>
+      <leaf name="across-interfaces">
+        <description>
+          <text>Use different interfaces for equal-cost paths</text>
+        </description>
+        <type name="empty"/>
+      </leaf>
+    </container>
+    <container name="ttl-security">
+      <description>
+        <text>TTL security check</text>
+      </description>
+      <leaf name="all-interfaces">
+        <description>
+          <text>Enable TTL Security on all interfaces</text>
+        </description>
+        <type name="empty"/>
+      </leaf>
+      <leaf name="hops">
+        <description>
+          <text>IP hops</text>
+        </description>
+        <type name="uint8">
+          <range value="1..254"/>
+        </type>
+      </leaf>
+    </container>
+  </grouping>
+  <grouping name="distribute-list-grouping">
+    <container name="distribute-list">
+      <description>
+        <text>Filter networks in routing updates</text>
+      </description>
+      <list name="accesslist">
+        <key value="in-out"/>
+        <leaf name="in-out">
+          <type name="ios-types:access-list-in-out-type"/>
+        </leaf>
+      </list>
+      <list name="accesslist-ifname">
+        <key value="in-out interface"/>
+        <leaf name="in-out">
+          <type name="ios-types:access-list-in-out-type"/>
+        </leaf>
+        <leaf name="interface">
+          <type name="string"/>
+        </leaf>
+        <leaf name="interface-routing-id">
+          <type name="uint8"/>
+        </leaf>
+        <leaf name="isis-tag">
+          <type name="string"/>
+        </leaf>
+        <leaf name="vrf">
+          <description>
+            <text>VPN Routing/Forwarding Instance</text>
+          </description>
+          <type name="string"/>
+        </leaf>
+      </list>
+      <list name="accesslist-prefix-gateway">
+        <key value="in-out"/>
+        <leaf name="in-out">
+          <type name="ios-types:access-list-in-out-type"/>
+        </leaf>
+        <leaf name="prefix-gateway">
+          <mandatory value="true"/>
+          <type name="enumeration">
+            <enum name="prefix"/>
+            <enum name="gateway"/>
+            <enum name="route-map"/>
+          </type>
+        </leaf>
+        <leaf name="name">
+          <mandatory value="true"/>
+          <type name="string"/>
+        </leaf>
+      </list>
+      <list name="accesslist-prefix-gateway-ifname">
+        <key value="in-out interface"/>
+        <leaf name="in-out">
+          <type name="ios-types:access-list-in-out-type"/>
+        </leaf>
+        <leaf name="interface">
+          <type name="string"/>
+        </leaf>
+        <leaf name="prefix-gateway">
+          <mandatory value="true"/>
+          <type name="enumeration">
+            <enum name="prefix"/>
+            <enum name="gateway"/>
+            <enum name="route-map"/>
+          </type>
+        </leaf>
+        <leaf name="name">
+          <mandatory value="true"/>
+          <type name="string"/>
+        </leaf>
+        <leaf name="interface-routing-id">
+          <type name="uint8"/>
+        </leaf>
+        <leaf name="isis-tag">
+          <type name="string"/>
+        </leaf>
+        <leaf name="vrf">
+          <description>
+            <text>VPN Routing/Forwarding Instance</text>
+          </description>
+          <type name="string"/>
+        </leaf>
+      </list>
+    </container>
+  </grouping>
+  <grouping name="ospf-authentication-key-grouping">
+    <container name="authentication-key">
+      <description>
+        <text>Set authentication key</text>
+      </description>
+      <leaf name="auth-type">
+        <type name="uint8">
+          <range value="0 .. 7"/>
+        </type>
+      </leaf>
+      <leaf name="auth-key">
+        <type name="string"/>
+      </leaf>
+    </container>
+  </grouping>
+  <grouping name="ospf-area-virtual-link-grouping">
+    <uses name="ospf-authentication-key-grouping"/>
+    <list name="message-digest-key">
+      <description>
+        <text>Set message digest key</text>
+      </description>
+      <key value="id"/>
+      <leaf name="id">
+        <type name="uint8">
+          <range value="1 .. 255"/>
+        </type>
+      </leaf>
+      <container name="md5">
+        <description>
+          <text>Use MD5 algorithm</text>
+        </description>
+        <leaf name="auth-type">
+          <type name="uint8">
+            <range value="0 .. 7"/>
+          </type>
+        </leaf>
+        <leaf name="auth-key">
+          <type name="string">
+            <length value="1 .. 16"/>
+          </type>
+        </leaf>
+      </container>
+    </list>
+  </grouping>
+  <grouping name="tie-break-index">
+    <leaf name="required">
+      <description>
+        <text>Mandatory repair path attribute</text>
+      </description>
+      <type name="empty"/>
+    </leaf>
+    <leaf name="index">
+      <description>
+        <text>Tiebreak attribute priority</text>
+      </description>
+      <type name="uint8">
+        <range value="1..255"/>
+      </type>
+    </leaf>
+  </grouping>
+  <grouping name="queue-depth-grouping">
+    <leaf name="options">
+      <type name="union">
+        <type name="uint32">
+          <range value="1 .. 2147483647"/>
+        </type>
+        <type name="enumeration">
+          <enum name="unlimited"/>
+        </type>
+      </type>
+    </leaf>
+  </grouping>
+  <grouping name="router-eigrp-redistribute-grouping">
+    <container name="metric">
+      <description>
+        <text>Metric for redistributed routes</text>
+      </description>
+      <leaf name="bandwith">
+        <description>
+          <text>Bandwidth metric in Kbits per second</text>
+        </description>
+        <type name="uint32">
+          <range value="1..4294967295"/>
+        </type>
+      </leaf>
+      <leaf name="delay">
+        <description>
+          <text>EIGRP delay metric, in 10 microsecond units</text>
+        </description>
+        <type name="uint32">
+          <range value="0..4294967295"/>
+        </type>
+      </leaf>
+      <leaf name="reliability">
+        <description>
+          <text>EIGRP reliability metric where 255 is 100% reliable</text>
+        </description>
+        <type name="uint8">
+          <range value="0..255"/>
+        </type>
+      </leaf>
+      <leaf name="Effective">
+        <description>
+          <text>EIGRP Effective bandwidth metric (Loading) where 255 is 100% loaded</text>
+        </description>
+        <type name="uint8">
+          <range value="1..255"/>
+        </type>
+      </leaf>
+      <leaf name="mtu">
+        <description>
+          <text>EIGRP MTU of the path</text>
+        </description>
+        <type name="uint16">
+          <range value="1..65535"/>
+        </type>
+      </leaf>
+    </container>
+    <leaf name="route-map">
+      <description>
+        <text>Route map reference</text>
+      </description>
+      <type name="string"/>
+    </leaf>
+  </grouping>
+  <grouping name="ospf-redistribute-match-grouping">
+    <leaf name="metric">
+      <description>
+        <text>Metric for redistributed routes</text>
+      </description>
+      <type name="uint32"/>
+    </leaf>
+    <leaf name="metric-type">
+      <description>
+        <text>OSPF/IS-IS exterior metric type for redistributed routes</text>
+      </description>
+      <type name="enumeration">
+        <enum name="1"/>
+        <enum name="2"/>
+      </type>
+    </leaf>
+    <leaf name="nssa-only">
+      <description>
+        <text>Limit redistributed routes to NSSA areas</text>
+      </description>
+      <type name="empty"/>
+    </leaf>
+    <leaf name="subnets">
+      <description>
+        <text>Consider subnets for redistribution into OSPF</text>
+      </description>
+      <type name="empty"/>
+    </leaf>
+    <leaf name="route-map">
+      <description>
+        <text>Route map reference</text>
+      </description>
+      <type name="string"/>
+    </leaf>
+    <leaf name="tag">
+      <description>
+        <text>Set tag for routes redistributed into OSPF</text>
+      </description>
+      <type name="uint32">
+        <range value="0 .. 4294967295"/>
+      </type>
+    </leaf>
+  </grouping>
+  <grouping name="ospf-redistribute-top-match-grouping">
+    <container name="match">
+      <description>
+        <text>Redistribution of OSPF routes</text>
+      </description>
+      <container name="internal">
+        <presence value="Redistribute OSPF internal routes"/>
+        <description>
+          <text>Redistribute OSPF internal routes</text>
+        </description>
+        <uses name="ospf-redistribute-match-grouping"/>
+      </container>
+      <container name="external">
+        <description>
+          <text>Redistribute OSPF external routes</text>
+        </description>
+        <presence value="Redistribute OSPF external routes"/>
+        <leaf name="external-routes">
+          <type name="redist-ospf-external-type"/>
+        </leaf>
+        <uses name="ospf-redistribute-match-grouping"/>
+      </container>
+      <container name="nssa-external">
+        <description>
+          <text>Redistribute OSPF NSSA external routes</text>
+        </description>
+        <presence value="Redistribute OSPF NSSA external routes"/>
+        <leaf name="nssa-external-routes">
+          <type name="redist-ospf-external-type"/>
+        </leaf>
+        <uses name="ospf-redistribute-match-grouping"/>
+      </container>
+    </container>
+  </grouping>
+  <grouping name="ospf-iso-igrp-redistribute-grouping">
+    <leaf name="metric">
+      <description>
+        <text>Metric for redistributed routes</text>
+      </description>
+      <type name="uint32"/>
+    </leaf>
+    <leaf name="metric-type">
+      <description>
+        <text>OSPF/IS-IS exterior metric type for redistributed routes</text>
+      </description>
+      <type name="enumeration">
+        <enum name="1"/>
+        <enum name="2"/>
+      </type>
+    </leaf>
+    <leaf name="tag">
+      <description>
+        <text>Set tag for routes redistributed into OSPF</text>
+      </description>
+      <type name="uint32">
+        <range value="0 .. 4294967295"/>
+      </type>
+    </leaf>
+    <leaf name="subnets">
+      <description>
+        <text>Consider subnets for redistribution into OSPF</text>
+      </description>
+      <type name="empty"/>
+    </leaf>
+  </grouping>
+  <grouping name="ospf-redistribute-grouping">
+    <container name="redist-options">
+      <uses name="ospf-iso-igrp-redistribute-grouping"/>
+      <leaf name="route-map">
+        <description>
+          <text>Route map reference</text>
+        </description>
+        <type name="string"/>
+      </leaf>
+      <leaf name="nssa-only">
+        <description>
+          <text>Limit redistributed routes to NSSA areas</text>
+        </description>
+        <type name="empty"/>
+      </leaf>
+    </container>
+  </grouping>
+  <grouping name="ospf-redistribute-top-grouping">
+    <list name="application">
+      <description>
+        <text>Application</text>
+      </description>
+      <key value="name"/>
+      <leaf name="name">
+        <type name="string"/>
+      </leaf>
+      <uses name="ospf-redistribute-grouping"/>
+    </list>
+    <list name="bgp">
+      <description>
+        <text>Border Gateway Protocol (BGP)</text>
+      </description>
+      <key value="as-number"/>
+      <uses name="ospf-redistribute-bgp-grouping"/>
+    </list>
+    <container name="connected">
+      <description>
+        <text>Connected</text>
+      </description>
+      <presence value="Connected"/>
+      <uses name="ospf-redistribute-grouping"/>
+    </container>
+    <list name="eigrp">
+      <description>
+        <text>Enhanced Interior Gateway Routing Protocol (EIGRP)</text>
+      </description>
+      <key value="as-number"/>
+      <uses name="ospf-redistribute-bgp-grouping"/>
+    </list>
+    <container name="isis">
+      <presence value="ISO IS-IS"/>
+      <description>
+        <text>ISO IS-IS</text>
+      </description>
+      <choice name="isis-level-routes-isis-area-choice">
+        <leaf name="isis-level-routes">
+          <type name="enumeration">
+            <enum name="level-1"/>
+            <enum name="level-2"/>
+            <enum name="level-1-2"/>
+          </type>
+        </leaf>
+        <list name="isis-area">
+          <key value="name"/>
+          <leaf name="name">
+            <type name="string"/>
+          </leaf>
+          <leaf name="isis-level-routes">
+            <type name="enumeration">
+              <enum name="level-1"/>
+              <enum name="level-2"/>
+              <enum name="level-1-2"/>
+            </type>
+          </leaf>
+          <uses name="ospf-redistribute-grouping"/>
+        </list>
+      </choice>
+      <uses name="ospf-redistribute-grouping"/>
+    </container>
+    <container name="iso-igrp">
+      <description>
+        <text>IGRP for OSI networks</text>
+      </description>
+      <presence value="IGRP for OSI networks"/>
+      <choice name="area-tag-route-map-choice">
+        <container name="area-tag-route-map-container">
+          <leaf name="area-tag">
+            <type name="string"/>
+          </leaf>
+          <leaf name="route-map">
+            <description>
+              <text>Route map reference</text>
+            </description>
+            <type name="string"/>
+          </leaf>
+        </container>
+        <leaf name="route-map">
+          <description>
+            <text>Route map reference</text>
+          </description>
+          <type name="string"/>
+        </leaf>
+      </choice>
+      <container name="iso-igrp-container">
+        <uses name="ospf-iso-igrp-redistribute-grouping"/>
+      </container>
+    </container>
+    <container name="lisp">
+      <description>
+        <text>Locator ID Separation Protocol (LISP)</text>
+      </description>
+      <uses name="ospf-redistribute-grouping"/>
+    </container>
+    <container name="mobile">
+      <description>
+        <text>Mobile routes</text>
+      </description>
+      <presence value="Mobile routes"/>
+      <uses name="ospf-redistribute-grouping"/>
+    </container>
+    <container name="odr">
+      <description>
+        <text>On Demand stub Routes</text>
+      </description>
+      <presence value="On Demand stub Routes"/>
+      <uses name="ospf-redistribute-grouping"/>
+    </container>
+    <list name="ospf">
+      <description>
+        <text>Open Shortest Path First (OSPF)</text>
+      </description>
+      <key value="id"/>
+      <leaf name="id">
+        <type name="uint32">
+          <range value="1 .. 65535"/>
+        </type>
+      </leaf>
+      <uses name="ospf-redistribute-top-match-grouping"/>
+      <uses name="ospf-redistribute-match-grouping"/>
+      <leaf name="vrf">
+        <description>
+          <text>VPN Routing/Forwarding Instance</text>
+        </description>
+        <type name="string"/>
+      </leaf>
+    </list>
+    <list name="ospfv3">
+      <description>
+        <text>OSPFv3</text>
+      </description>
+      <key value="id"/>
+      <leaf name="id">
+        <type name="uint32">
+          <range value="1 .. 65535"/>
+        </type>
+      </leaf>
+      <uses name="ospf-redistribute-top-match-grouping"/>
+      <uses name="ospf-redistribute-match-grouping"/>
+    </list>
+    <list name="rip">
+      <description>
+        <text>Routing Information Protocol (RIP)</text>
+      </description>
+      <key value="id"/>
+      <leaf name="id">
+        <description>
+          <text>User selected string identifying this rip process</text>
+        </description>
+        <type name="string"/>
+      </leaf>
+      <uses name="ospf-redistribute-grouping"/>
+    </list>
+    <container name="static">
+      <description>
+        <text>Static routes</text>
+      </description>
+      <presence value="Static routes"/>
+      <uses name="ospf-redistribute-grouping"/>
+    </container>
+  </grouping>
+  <grouping name="ospf-redistribute-bgp-grouping">
+    <leaf name="as-number">
+      <type name="ios-types:bgp-as-number-type"/>
+    </leaf>
+    <uses name="ospf-redistribute-grouping"/>
+  </grouping>
+  <grouping name="router-snmp-grouping">
+    <container name="snmp">
+      <description>
+        <text>Modify snmp parameters</text>
+      </description>
+      <list name="context">
+        <description>
+          <text>Configure a SNMP context</text>
+        </description>
+        <key value="name"/>
+        <leaf name="name">
+          <description>
+            <text>Context Name</text>
+          </description>
+          <type name="string"/>
+        </leaf>
+        <container name="community">
+          <description>
+            <text>Configure a SNMP v2c Community string and access privs</text>
+          </description>
+          <leaf name="community-string">
+            <type name="string"/>
+          </leaf>
+          <container name="access">
+            <leaf name="standard-acl">
+              <type name="uint32">
+                <range value="1..99"/>
+              </type>
+            </leaf>
+            <leaf name="expanded-acl">
+              <type name="uint32">
+                <range value="1300..1999"/>
+              </type>
+            </leaf>
+            <leaf name="acl-name">
+              <type name="string"/>
+            </leaf>
+            <leaf name="ipv6">
+              <description>
+                <text>Specify IPv6 Named Access-List</text>
+              </description>
+              <type name="string"/>
+            </leaf>
+            <leaf name="ro">
+              <description>
+                <text>Read-only access with this community string</text>
+              </description>
+              <type name="empty"/>
+            </leaf>
+            <leaf name="rw">
+              <description>
+                <text>Read-write access with this community string</text>
+              </description>
+              <type name="empty"/>
+            </leaf>
+          </container>
+        </container>
+        <container name="user">
+          <description>
+            <text>Configure a SNMP v3 user</text>
+          </description>
+          <leaf name="name">
+            <type name="string"/>
+          </leaf>
+          <container name="permisssion">
+            <container name="access">
+              <description>
+                <text>specify an access-list associated with this group</text>
+              </description>
+              <leaf name="standard-acl">
+                <type name="uint32"/>
+              </leaf>
+              <leaf name="acl-name">
+                <type name="string"/>
+              </leaf>
+              <leaf name="ipv6">
+                <type name="string"/>
+              </leaf>
+            </container>
+            <container name="auth">
+              <description>
+                <text>authentication parameters for the user</text>
+              </description>
+              <leaf name="md5">
+                <description>
+                  <text>Use HMAC MD5 algorithm for authentication</text>
+                </description>
+                <type name="string"/>
+              </leaf>
+              <leaf name="sha">
+                <description>
+                  <text>Use HMAC SHA algorithm for authentication</text>
+                </description>
+                <type name="string"/>
+              </leaf>
+            </container>
+            <leaf name="credential">
+              <description>
+                <text>If the user password is already configured and saved</text>
+              </description>
+              <type name="empty"/>
+            </leaf>
+            <leaf name="encrypted">
+              <description>
+                <text>specifying passwords as MD5 or SHA digests</text>
+              </description>
+              <type name="empty"/>
+            </leaf>
+          </container>
+        </container>
+      </list>
+    </container>
+  </grouping>
+  <grouping name="ospf-address-family-grouping">
+    <uses name="router-snmp-grouping"/>
+    <container name="topology">
+      <description>
+        <text>Associate the routing protocol to a topology instance</text>
+      </description>
+      <leaf name="name">
+        <type name="string"/>
+      </leaf>
+      <leaf name="tid">
+        <description>
+          <text>Configuring the routing protocol topology tid</text>
+        </description>
+        <type name="uint32">
+          <range value="32..127"/>
+        </type>
+      </leaf>
+    </container>
+  </grouping>
+  <grouping name="config-router-ospf-grouping">
+    <list name="ospf">
+      <description>
+        <text>Open Shortest Path First (OSPF)</text>
+      </description>
+      <key value="id"/>
+      <leaf name="id">
+        <type name="uint16">
+          <range value="1..65535"/>
+        </type>
+      </leaf>
+      <leaf name="vrf">
+        <description>
+          <text>VPN Routing/Forwarding Instance</text>
+        </description>
+        <type name="string"/>
+      </leaf>
+      <container name="address-family">
+        <description>
+          <text>Enter Address Family command mode</text>
+        </description>
+        <container name="ipv4_1">
+          <container name="ipv4">
+            <description>
+              <text>Address family</text>
+            </description>
+            <uses name="ospf-address-family-grouping"/>
+          </container>
+        </container>
+        <container name="ipv4">
+          <description>
+            <text>Address family</text>
+          </description>
+          <container name="unicast">
+            <description>
+              <text>Address Family Modifier</text>
+            </description>
+            <uses name="ospf-address-family-grouping"/>
+          </container>
+          <container name="multicast">
+            <description>
+              <text>Address Family Modifier</text>
+            </description>
+            <uses name="ospf-address-family-grouping"/>
+          </container>
+        </container>
+      </container>
+      <uses name="ospf-ospfv3-common-grouping"/>
+      <uses name="ospf-ospfv3-common-address-family-grouping"/>
+      <uses name="distribute-list-grouping"/>
+      <container name="domain-id">
+        <description>
+          <text>OSPF domain-id</text>
+        </description>
+        <choice name="domain-id-choice">
+          <leaf name="ip-format">
+            <type name="inet:ipv4-address"/>
+          </leaf>
+          <container name="ip-format-secondary">
+            <leaf name="ip">
+              <type name="inet:ipv4-address"/>
+            </leaf>
+            <leaf name="secondary">
+              <description>
+                <text>Secondary Domain-ID</text>
+              </description>
+              <type name="empty"/>
+            </leaf>
+          </container>
+          <leaf name="Null">
+            <description>
+              <text>Null Domain-ID</text>
+            </description>
+            <type name="empty"/>
+          </leaf>
+          <container name="type">
+            <description>
+              <text>OSPF domain ID type in Hex format</text>
+            </description>
+            <leaf name="type-leaf">
+              <type name="enumeration">
+                <enum name="0005"/>
+                <enum name="0105"/>
+                <enum name="0205"/>
+                <enum name="8005"/>
+              </type>
+            </leaf>
+            <leaf name="value">
+              <description>
+                <text>OSPF domain ID value in Hex format</text>
+              </description>
+              <type name="string">
+                <pattern value="[0-9a-fA-F]{12}"/>
+              </type>
+            </leaf>
+          </container>
+        </choice>
+      </container>
+      <leaf name="domain-tag">
+        <description>
+          <text>OSPF domain-tag</text>
+        </description>
+        <type name="uint32">
+          <range value="1 .. 4294967295"/>
+        </type>
+      </leaf>
+      <container name="fast-reroute">
+        <description>
+          <text>LFA FastReroute parameters</text>
+        </description>
+        <leaf name="keep-all-paths">
+          <description>
+            <text>Keep LFA FRR audit trail</text>
+          </description>
+          <type name="empty"/>
+        </leaf>
+        <container name="per-prefix">
+          <description>
+            <text>Per-prefix LFA FRR parameters</text>
+          </description>
+          <container name="enable">
+            <description>
+              <text>Enable LFA Fast Reroute</text>
+            </description>
+            <leaf name="area">
+              <description>
+                <text>Area to enable LFA FRR in</text>
+              </description>
+              <type name="ios-types:ospf-area-type"/>
+            </leaf>
+            <leaf name="prefix-priority">
+              <description>
+                <text>Priority of prefixes to be protected</text>
+              </description>
+              <type name="enumeration">
+                <enum name="high"/>
+                <enum name="low"/>
+              </type>
+            </leaf>
+          </container>
+          <container name="remote-lfa">
+            <description>
+              <text>Remote LFA FastReroute parameters</text>
+            </description>
+            <container name="area-cost">
+              <leaf name="area">
+                <description>
+                  <text>Area for remote LFA command</text>
+                </description>
+                <type name="ios-types:ospf-area-type"/>
+              </leaf>
+              <leaf name="maximum-cost">
+                <description>
+                  <text>Maximum distance to tunnel endpoint</text>
+                </description>
+                <type name="uint32">
+                  <range value="1..16777214"/>
+                </type>
+              </leaf>
+            </container>
+            <container name="area-tunnel">
+              <leaf name="area">
+                <description>
+                  <text>Area for remote LFA command</text>
+                </description>
+                <type name="ios-types:ospf-area-type"/>
+              </leaf>
+              <leaf name="tunnel">
+                <description>
+                  <text>Remote LFA tunnel type</text>
+                </description>
+                <type name="enumeration">
+                  <enum name="mpls-ldp"/>
+                </type>
+              </leaf>
+            </container>
+            <leaf name="maximum-cost">
+              <description>
+                <text>Maximum distance to tunnel endpoint</text>
+              </description>
+              <type name="uint32">
+                <range value="1..16777214"/>
+              </type>
+            </leaf>
+            <leaf name="tunnel">
+              <description>
+                <text>Remote LFA tunnel type</text>
+              </description>
+              <type name="enumeration">
+                <enum name="mpls-ldp"/>
+              </type>
+            </leaf>
+          </container>
+          <container name="tie-break">
+            <description>
+              <text>LFA FRR repair path selection policy tiebreaks</text>
+            </description>
+            <container name="broadcast-interface-disjoint">
+              <description>
+                <text>Interface protection attribute</text>
+              </description>
+              <uses name="tie-break-index"/>
+            </container>
+            <container name="downstream">
+              <description>
+                <text>Downstream repair path attribute</text>
+              </description>
+              <uses name="tie-break-index"/>
+            </container>
+            <container name="linecard-disjoint">
+              <description>
+                <text>Line card protection attribute</text>
+              </description>
+              <uses name="tie-break-index"/>
+            </container>
+            <container name="lowest-metric">
+              <description>
+                <text>Lowest metric repair path attribute</text>
+              </description>
+              <uses name="tie-break-index"/>
+            </container>
+            <container name="node-protecting">
+              <description>
+                <text>Node protecting repair path attribute</text>
+              </description>
+              <uses name="tie-break-index"/>
+            </container>
+            <container name="primary-path">
+              <description>
+                <text>Equal cost multipath attribute</text>
+              </description>
+              <uses name="tie-break-index"/>
+            </container>
+            <container name="secondary-path">
+              <description>
+                <text>Not-equal cost multipath attribute</text>
+              </description>
+              <uses name="tie-break-index"/>
+            </container>
+            <container name="srlg">
+              <description>
+                <text>Shared risk link group attribute</text>
+              </description>
+              <uses name="tie-break-index"/>
+            </container>
+          </container>
+        </container>
+      </container>
+      <container name="graceful-restart">
+        <presence value="true"/>
+        <description>
+          <text>Graceful-restart options</text>
+        </description>
+        <leaf name="disable">
+          <description>
+            <text>Graceful restart disable</text>
+          </description>
+          <type name="empty"/>
+        </leaf>
+        <container name="helper">
+          <description>
+            <text>helper support</text>
+          </description>
+          <presence value="true"/>
+          <leaf name="disable">
+            <description>
+              <text>disable helper support</text>
+            </description>
+            <type name="empty"/>
+          </leaf>
+          <leaf name="strict-lsa-checking">
+            <description>
+              <text>enable helper strict LSA checking</text>
+            </description>
+            <type name="empty"/>
+          </leaf>
+        </container>
+        <leaf name="restart-interval">
+          <description>
+            <text>Graceful restart interval</text>
+          </description>
+          <type name="uint16"/>
+        </leaf>
+      </container>
+      <container name="ignore">
+        <description>
+          <text>Do not complain about specific event</text>
+        </description>
+        <container name="lsa">
+          <description>
+            <text>Do not complain upon receiving LSA of the specified type</text>
+          </description>
+          <leaf name="mospf">
+            <description>
+              <text>MOSPF Type 6 LSA</text>
+            </description>
+            <type name="empty"/>
+          </leaf>
+        </container>
+      </container>
+      <leaf name="ispf">
+        <description>
+          <text>Enable incremental SPF computation</text>
+        </description>
+        <type name="empty"/>
+      </leaf>
+      <container name="limit">
+        <description>
+          <text>Limit a specific OSPF feature</text>
+        </description>
+        <container name="retransmissions">
+          <description>
+            <text>LS update, DBD, and LS request retransmissions</text>
+          </description>
+          <leaf name="non-dc">
+            <description>
+              <text>Non-demand-circuit retransmissions</text>
+            </description>
+            <type name="ios-types:limit-dc-non-dc-type"/>
+          </leaf>
+          <leaf name="dc">
+            <description>
+              <text>Demand circuit retransmissions</text>
+            </description>
+            <type name="ios-types:limit-dc-non-dc-type"/>
+          </leaf>
+        </container>
+      </container>
+      <container name="local-rib-criteria">
+        <description>
+          <text>Enable or disable usage of local RIB as route criteria</text>
+        </description>
+        <leaf name="forwarding-address">
+          <description>
+            <text>Local RIB used to validate external/NSSA forwarding addresses</text>
+          </description>
+          <type name="empty"/>
+        </leaf>
+        <leaf name="inter-area-summary">
+          <description>
+            <text>Local RIB used as criteria for inter-area summaries</text>
+          </description>
+          <type name="empty"/>
+        </leaf>
+        <leaf name="nssa-translation">
+          <description>
+            <text>Local RIB used as criteria for NSSA translation</text>
+          </description>
+          <type name="empty"/>
+        </leaf>
+      </container>
+      <container name="microloop">
+        <description>
+          <text>Traffic microloop control parameters</text>
+        </description>
+        <container name="avoidance">
+          <description>
+            <text>Traffic microloop avoidance parameters</text>
+          </description>
+          <presence value="true"/>
+          <leaf name="disable">
+            <description>
+              <text>Microloop avoidance auto-enable prohibited</text>
+            </description>
+            <type name="empty"/>
+          </leaf>
+          <leaf name="protected">
+            <description>
+              <text>Microloop avoidance for protected prefixes only</text>
+            </description>
+            <type name="empty"/>
+          </leaf>
+          <leaf name="rib-update-delay">
+            <description>
+              <text>Delay before updating the RIB</text>
+            </description>
+            <type name="uint32">
+              <range value="1..600000"/>
+            </type>
+          </leaf>
+        </container>
+      </container>
+      <container name="mpls">
+        <description>
+          <text>Configure MPLS routing protocol parameters</text>
+        </description>
+        <container name="ldp">
+          <description>
+            <text>routing protocol commands for MPLS LDP</text>
+          </description>
+          <container name="autoconfig">
+            <description>
+              <text>Configure LDP automatic configuration</text>
+            </description>
+            <presence value="Configure LDP automatic configuration"/>
+            <leaf name="area">
+              <description>
+                <text>Configure an OSPF area to run MPLS LDP</text>
+              </description>
+              <type name="ios-types:ospf-area-type"/>
+            </leaf>
+          </container>
+          <container name="sync">
+            <description>
+              <text>Configure LDP-IGP Synchronization</text>
+            </description>
+            <presence value="Configure LDP-IGP Synchronization"/>
+          </container>
+        </container>
+        <container name="traffic-eng">
+          <description>
+            <text>routing protocol commands for MPLS Traffic Engineering</text>
+          </description>
+          <leaf name="multicast-intact">
+            <description>
+              <text>MPLS TE and PIM interaction</text>
+            </description>
+            <type name="empty"/>
+          </leaf>
+          <list name="area">
+            <description>
+              <text>configure an ospf area to run MPLS Traffic Engineering</text>
+            </description>
+            <key value="id"/>
+            <leaf name="id">
+              <description>
+                <text>OSPF area ID</text>
+              </description>
+              <type name="ios-types:ospf-area-type"/>
+            </leaf>
+          </list>
+          <container name="autoroute-exclude">
+            <description>
+              <text>MPLS TE autoroute exclude</text>
+            </description>
+            <leaf name="prefix-list">
+              <description>
+                <text>Filter prefixes</text>
+              </description>
+              <type name="string"/>
+            </leaf>
+          </container>
+          <list name="interface">
+            <description>
+              <text>MPLS TE interface configuration for this OSPF process</text>
+            </description>
+            <key value="name-id"/>
+            <leaf name="name-id">
+              <description>
+                <text>Interface name and ID</text>
+              </description>
+              <type name="string"/>
+            </leaf>
+            <leaf name="area">
+              <description>
+                <text>Advertise MPLS TE information for this interface into area</text>
+              </description>
+              <type name="uint32"/>
+            </leaf>
+          </list>
+          <list name="mesh-group">
+            <description>
+              <text>Traffic Engineering Mesh-Group advertisement</text>
+            </description>
+            <key value="id area"/>
+            <leaf name="id">
+              <description>
+                <text>Mesh Group ID: &lt;0..4294967295&gt;</text>
+              </description>
+              <type name="uint32"/>
+            </leaf>
+            <leaf name="area">
+              <description>
+                <text>configure flooding scope as area</text>
+              </description>
+              <type name="ios-types:ospf-area-type"/>
+            </leaf>
+            <leaf name="interface">
+              <description>
+                <text>Interface name and ID</text>
+              </description>
+              <type name="string"/>
+            </leaf>
+          </list>
+          <container name="router-id">
+            <description>
+              <text>Traffic Engineering stable IP address for system</text>
+            </description>
+            <uses name="ios-ifc:interface-grouping"/>
+          </container>
+        </container>
+      </container>
+      <list name="neighbor">
+        <description>
+          <text>Specify a neighbor router</text>
+        </description>
+        <key value="ip"/>
+        <leaf name="ip">
+          <type name="inet:ipv4-address"/>
+        </leaf>
+        <leaf name="cost">
+          <description>
+            <text>OSPF cost for point-to-multipoint neighbor</text>
+          </description>
+          <type name="uint32">
+            <range value="1 .. 65535"/>
+          </type>
+        </leaf>
+        <container name="database-filter">
+          <description>
+            <text>Filter OSPF LSA during synchronization and flooding for point-to-multipoint neighbor</text>
+          </description>
+          <container name="all">
+            <description>
+              <text>Filter all LSA</text>
+            </description>
+            <leaf name="out">
+              <description>
+                <text>Outgoing LSA</text>
+              </description>
+              <type name="empty"/>
+            </leaf>
+          </container>
+        </container>
+        <leaf name="poll-interval">
+          <description>
+            <text>OSPF dead-router polling interval</text>
+          </description>
+          <type name="uint32">
+            <range value="0 .. 65535"/>
+          </type>
+        </leaf>
+        <leaf name="priority">
+          <description>
+            <text>OSPF priority of non-broadcast neighbor</text>
+          </description>
+          <type name="uint32">
+            <range value="0 .. 255"/>
+          </type>
+        </leaf>
+      </list>
+      <list name="network">
+        <description>
+          <text>Enable routing on an IP network</text>
+        </description>
+        <key value="ip mask"/>
+        <leaf name="ip">
+          <type name="inet:ipv4-address"/>
+        </leaf>
+        <leaf name="mask">
+          <type name="inet:ipv4-address"/>
+        </leaf>
+        <leaf name="area">
+          <description>
+            <text>Set the OSPF area ID</text>
+          </description>
+          <type name="ios-types:ospf-area-type"/>
+        </leaf>
+      </list>
+      <container name="nsf">
+        <description>
+          <text>Non-stop forwarding</text>
+        </description>
+        <presence value="true"/>
+        <container name="cisco">
+          <description>
+            <text>Cisco Non-stop forwarding</text>
+          </description>
+          <presence value="true"/>
+          <container name="enforce">
+            <description>
+              <text>Cancel NSF restart when non-NSF-aware neighbors detected</text>
+            </description>
+            <leaf name="global">
+              <description>
+                <text>For the whole OSPF process</text>
+              </description>
+              <type name="empty"/>
+            </leaf>
+          </container>
+          <container name="helper">
+            <description>
+              <text>helper support</text>
+            </description>
+            <presence value="helper support"/>
+            <leaf name="disable">
+              <description>
+                <text>disable helper support</text>
+              </description>
+              <type name="empty"/>
+            </leaf>
+          </container>
+        </container>
+        <container name="ietf">
+          <description>
+            <text>IETF graceful restart</text>
+          </description>
+          <presence value="true"/>
+          <container name="helper">
+            <description>
+              <text>helper support</text>
+            </description>
+            <presence value="helper support"/>
+            <leaf name="disable">
+              <description>
+                <text>disable helper support</text>
+              </description>
+              <type name="empty"/>
+            </leaf>
+            <leaf name="strict-lsa-checking">
+              <description>
+                <text>enable helper strict LSA checking</text>
+              </description>
+              <type name="empty"/>
+            </leaf>
+          </container>
+          <leaf name="restart-interval">
+            <description>
+              <text>Graceful restart interval</text>
+            </description>
+            <type name="uint16">
+              <range value="1..1800"/>
+            </type>
+          </leaf>
+        </container>
+      </container>
+      <container name="prefix-priority">
+        <description>
+          <text>OSPF prefix priority</text>
+        </description>
+        <leaf name="high">
+          <description>
+            <text>High prefix priority</text>
+          </description>
+          <type name="empty"/>
+        </leaf>
+        <leaf name="route-map">
+          <description>
+            <text>Prefix priority selection by route-map</text>
+          </description>
+          <type name="string"/>
+        </leaf>
+      </container>
+      <leaf name="prefix-suppression">
+        <description>
+          <text>OSPF prefix suppression</text>
+        </description>
+        <type name="empty"/>
+      </leaf>
+      <leaf name="priority">
+        <description>
+          <text>OSPF topology priority</text>
+        </description>
+        <type name="uint8">
+          <range value="0..127"/>
+        </type>
+      </leaf>
+      <container name="process-min-time">
+        <description>
+          <text>Percentage of quantum to be used before releasing CPU</text>
+        </description>
+        <leaf name="percent">
+          <description>
+            <text>percent</text>
+          </description>
+          <type name="uint32">
+            <range value="1 .. 100"/>
+          </type>
+        </leaf>
+      </container>
+      <leaf name="shutdown">
+        <description>
+          <text>Shutdown the OSPF protocol under the current instance</text>
+        </description>
+        <type name="boolean"/>
+      </leaf>
+      <uses name="router-snmp-grouping"/>
+      <list name="summary-address">
+        <description>
+          <text>Configure IP address summaries</text>
+        </description>
+        <key value="ip wildcard"/>
+        <leaf name="ip">
+          <type name="inet:ipv4-address"/>
+        </leaf>
+        <leaf name="wildcard">
+          <type name="inet:ipv4-address"/>
+        </leaf>
+        <choice name="tag-no-advertise-choice">
+          <leaf name="nssa-only">
+            <description>
+              <text>Limit summary to NSSA areas</text>
+            </description>
+            <type name="empty"/>
+          </leaf>
+          <leaf name="tag">
+            <description>
+              <text>Set tag</text>
+            </description>
+            <type name="uint32">
+              <range value="0 .. 4294967295"/>
+            </type>
+          </leaf>
+          <leaf name="not-advertise">
+            <description>
+              <text>Do not advertise when translating OSPF type-7 LSA</text>
+            </description>
+            <type name="empty"/>
+          </leaf>
+        </choice>
+      </list>
+    </list>
+  </grouping>
+  <augment target-node="/ios:native/ios:router">
+    <uses name="config-router-ospf-grouping"/>
+  </augment>
+  <augment target-node="/ios:native/ios:interface/ios:FastEthernet/ios:ip">
+    <uses name="config-interface-ip-ospf-grouping"/>
+  </augment>
+  <augment target-node="/ios:native/ios:interface/ios:GigabitEthernet/ios:ip">
+    <uses name="config-interface-ip-ospf-grouping"/>
+  </augment>
+  <augment target-node="/ios:native/ios:interface/ios:TenGigabitEthernet/ios:ip">
+    <uses name="config-interface-ip-ospf-grouping"/>
+  </augment>
+  <augment target-node="/ios:native/ios:interface/ios:FiveGigabitEthernet/ios:ip">
+    <uses name="config-interface-ip-ospf-grouping"/>
+  </augment>
+  <augment target-node="/ios:native/ios:interface/ios:TwentyFiveGigE/ios:ip">
+    <uses name="config-interface-ip-ospf-grouping"/>
+  </augment>
+  <augment target-node="/ios:native/ios:interface/ios:TwoGigabitEthernet/ios:ip">
+    <uses name="config-interface-ip-ospf-grouping"/>
+  </augment>
+  <augment target-node="/ios:native/ios:interface/ios:FortyGigabitEthernet/ios:ip">
+    <uses name="config-interface-ip-ospf-grouping"/>
+  </augment>
+  <augment target-node="/ios:native/ios:interface/ios:HundredGigE/ios:ip">
+    <uses name="config-interface-ip-ospf-grouping"/>
+  </augment>
+  <augment target-node="/ios:native/ios:interface/ios:Port-channel/ios:ip">
+    <uses name="config-interface-ip-ospf-grouping"/>
+  </augment>
+  <augment target-node="/ios:native/ios:interface/ios:Loopback/ios:ip">
+    <uses name="config-interface-ip-ospf-grouping"/>
+  </augment>
+  <augment target-node="/ios:native/ios:interface/ios:Tunnel/ios:ip">
+    <uses name="config-interface-ip-ospf-grouping"/>
+  </augment>
+  <augment target-node="/ios:native/ios:interface/ios:BDI/ios:ip">
+    <uses name="config-interface-ip-ospf-grouping"/>
+  </augment>
+  <augment target-node="/ios:native/ios:interface/ios:FastEthernet/ios:ipv6">
+    <uses name="config-interface-ipv6-ospf-grouping"/>
+  </augment>
+  <augment target-node="/ios:native/ios:interface/ios:GigabitEthernet/ios:ipv6">
+    <uses name="config-interface-ipv6-ospf-grouping"/>
+  </augment>
+  <augment target-node="/ios:native/ios:interface/ios:TenGigabitEthernet/ios:ipv6">
+    <uses name="config-interface-ipv6-ospf-grouping"/>
+  </augment>
+  <augment target-node="/ios:native/ios:interface/ios:FiveGigabitEthernet/ios:ipv6">
+    <uses name="config-interface-ipv6-ospf-grouping"/>
+  </augment>
+  <augment target-node="/ios:native/ios:interface/ios:TwentyFiveGigE/ios:ipv6">
+    <uses name="config-interface-ipv6-ospf-grouping"/>
+  </augment>
+  <augment target-node="/ios:native/ios:interface/ios:TwoGigabitEthernet/ios:ipv6">
+    <uses name="config-interface-ipv6-ospf-grouping"/>
+  </augment>
+  <augment target-node="/ios:native/ios:interface/ios:FortyGigabitEthernet/ios:ipv6">
+    <uses name="config-interface-ipv6-ospf-grouping"/>
+  </augment>
+  <augment target-node="/ios:native/ios:interface/ios:HundredGigE/ios:ipv6">
+    <uses name="config-interface-ipv6-ospf-grouping"/>
+  </augment>
+  <augment target-node="/ios:native/ios:interface/ios:Port-channel/ios:ipv6">
+    <uses name="config-interface-ipv6-ospf-grouping"/>
+  </augment>
+  <augment target-node="/ios:native/ios:interface/ios:Loopback/ios:ipv6">
+    <uses name="config-interface-ipv6-ospf-grouping"/>
+  </augment>
+  <augment target-node="/ios:native/ios:interface/ios:Tunnel/ios:ipv6">
+    <uses name="config-interface-ipv6-ospf-grouping"/>
+  </augment>
+</module>

@@ -1,0 +1,843 @@
+module: Cisco-IOS-XE-native
+  +--rw native
+     +--rw default
+     |  +--rw crypto
+     |     +--rw ikev2
+     |        +--rw proposal?   empty
+     |        +--rw policy?     empty
+     +--rw bfd
+     +--rw version?                 string
+     +--rw stackwise-virtual!
+     +--rw boot-start-marker?       empty
+     +--rw boot
+     |  +--rw system
+     |     +--rw tftp-path?   string
+     |     +--rw tftp?        string
+     |     +--rw bootfile
+     |     |  +--rw filename-list* [filename]
+     |     |     +--rw filename    string
+     |     +--rw flash
+     |        +--rw flash-list* [flash-leaf]
+     |           +--rw flash-leaf    string
+     +--rw boot-end-marker?         empty
+     +--rw banner
+     |  +--rw exec
+     |  |  +--rw banner?   string
+     |  +--rw login
+     |  |  +--rw banner?   string
+     |  +--rw prompt-timeout
+     |  |  +--rw banner?   string
+     |  +--rw motd
+     |     +--rw banner?   string
+     +--rw captive-portal-bypass?   empty
+     +--rw memory
+     |  +--rw statistics
+     |  |  +--rw history
+     |  |     +--rw table?   uint8
+     |  +--rw chunk
+     |  |  +--rw siblings
+     |  |     +--rw threshold?   uint32
+     |  +--rw free
+     |  |  +--rw low-watermark
+     |  |     +--rw IO?          uint32
+     |  |     +--rw processor?   uint32
+     |  +--rw lite?         empty
+     |  +--rw reserve
+     |  |  +--rw critical!
+     |  |     +--rw memory-range?   uint32
+     |  +--rw sanity!
+     |     +--rw all?      empty
+     |     +--rw buffer?   empty
+     |     +--rw queue?    empty
+     +--rw location
+     |  +--rw civic-location
+     |     +--rw identifier* [identifier]
+     |        +--rw identifier    string
+     |        +--rw building?     string
+     |        +--rw floor?        string
+     |        +--rw landmark?     string
+     |        +--rw name?         string
+     |        +--rw number?       string
+     +--rw call-home!
+     +--rw hw-module
+     |  +--rw uplink
+     |  |  +--rw select?   string
+     |  |  +--rw mode?     enumeration
+     |  +--rw sm?       uint8
+     |  +--rw pvdm?     string
+     +--rw cisp
+     |  +--rw enable?   empty
+     +--rw module
+     +--rw domain* [name]
+     |  +--rw name    string
+     |  +--rw vrf* [name]
+     |     +--rw name      string
+     |     +--rw border
+     |     |  +--rw advanced
+     |     |  |  +--rw monitor-cache-percent?   uint8
+     |     |  +--rw source-interface
+     |     |  |  +--rw Loopback?   uint32
+     |     |  +--rw master?             union
+     |     |  +--rw password
+     |     |     +--rw encryption?   enumeration
+     |     |     +--rw clear-key?    string
+     |     +--rw master
+     |        +--rw (master-type)?
+     |        |  +--:(branch)
+     |        |  |  +--rw branch?        empty
+     |        |  +--:(hub)
+     |        |  |  +--rw hub?           empty
+     |        |  +--:(transit)
+     |        |     +--rw transit?       uint8
+     |        +--rw advanced
+     |        |  +--rw byte-loss-threshold?          uint16
+     |        |  +--rw channel-unreachable-timer?    uint16
+     |        |  +--rw load-sharing?                 empty
+     |        |  +--rw minimum-mask-length?          uint8
+     |        |  +--rw mitigation-mode?              enumeration
+     |        |  +--rw packet-loss-threshold?        uint8
+     |        |  +--rw smart-probes
+     |        |  |  +--rw destination-port?   uint16
+     |        |  |  +--rw source-port?        uint16
+     |        |  +--rw syslog
+     |        |  |  +--rw tca-time-min?   uint32
+     |        |  +--rw tcp
+     |        |  |  +--rw mc-port?   uint16
+     |        |  +--rw threshold-variance?           uint8
+     |        |  +--rw traffic-class-ageout-timer
+     |        |  |  +--rw interval?        uint16
+     |        |  |  +--rw interval-unit?   enumeration
+     |        |  +--rw transit-site-affinity?        empty
+     |        +--rw collector
+     |        |  +--rw ip?     inet:ipv4-address
+     |        |  +--rw port?   uint16
+     |        +--rw enterprise-prefix
+     |        |  +--rw prefix-list?   string
+     |        +--rw load-balance!
+     |        |  +--rw advanced
+     |        |     +--rw match
+     |        |     |  +--rw dscp* [value]
+     |        |     |     +--rw value     ios-types:dscp-type
+     |        |     |     +--rw policy?   enumeration
+     |        |     +--rw path-preference
+     |        |     |  +--rw primary?     string
+     |        |     |  +--rw primary2?    string
+     |        |     |  +--rw primary3?    string
+     |        |     |  +--rw fallback?    union
+     |        |     |  +--rw fallback2?   string
+     |        |     |  +--rw fallback3?   string
+     |        |     +--rw path-last-resort?   string
+     |        +--rw password
+     |        |  +--rw encryption?   enumeration
+     |        |  +--rw clear-key?    string
+     |        +--rw site-prefixes
+     |        |  +--rw prefix-list?   string
+     |        +--rw source-interface
+     |        |  +--rw Loopback?   uint32
+     |        +--rw class* [name sequence]
+     |        |  +--rw name                string
+     |        |  +--rw sequence            uint16
+     |        |  +--rw match
+     |        |  |  +--rw dscp* [value]
+     |        |  |     +--rw value     ios-types:dscp-type
+     |        |  |     +--rw policy?   enumeration
+     |        |  +--rw path-preference
+     |        |  |  +--rw primary?     string
+     |        |  |  +--rw primary2?    string
+     |        |  |  +--rw primary3?    string
+     |        |  |  +--rw fallback?    union
+     |        |  |  +--rw fallback2?   string
+     |        |  |  +--rw fallback3?   string
+     |        |  +--rw path-last-resort?   string
+     |        +--rw hub-ip?              inet:ipv4-address
+     +--rw service
+     |  +--rw internal?                  empty
+     |  +--rw pad-conf
+     |  |  +--rw pad?   boolean
+     |  +--rw pad!
+     |  |  +--rw cmns?       empty
+     |  |  +--rw from-xot?   empty
+     |  |  +--rw to-xot?     empty
+     |  +--rw password-encryption?       empty
+     |  +--rw password-recovery?         boolean
+     |  +--rw timestamps!
+     |  |  +--rw debug
+     |  |  |  +--rw datetime!
+     |  |  |  |  +--rw localtime!
+     |  |  |  |  |  +--rw msec!
+     |  |  |  |  |  |  +--rw show-timezone?   empty
+     |  |  |  |  |  |  +--rw year?            empty
+     |  |  |  |  |  +--rw show-timezone!
+     |  |  |  |  |  |  +--rw msec?   empty
+     |  |  |  |  |  |  +--rw year?   empty
+     |  |  |  |  |  +--rw year!
+     |  |  |  |  |     +--rw msec?            empty
+     |  |  |  |  |     +--rw show-timezone?   empty
+     |  |  |  |  +--rw msec!
+     |  |  |  |  |  +--rw localtime!
+     |  |  |  |  |  |  +--rw show-timezone?   empty
+     |  |  |  |  |  |  +--rw year?            empty
+     |  |  |  |  |  +--rw show-timezone!
+     |  |  |  |  |  |  +--rw localtime?   empty
+     |  |  |  |  |  |  +--rw year?        empty
+     |  |  |  |  |  +--rw year!
+     |  |  |  |  |     +--rw localtime?       empty
+     |  |  |  |  |     +--rw show-timezone?   empty
+     |  |  |  |  +--rw show-timezone!
+     |  |  |  |  |  +--rw localtime!
+     |  |  |  |  |  |  +--rw msec?   empty
+     |  |  |  |  |  |  +--rw year?   empty
+     |  |  |  |  |  +--rw msec!
+     |  |  |  |  |  |  +--rw localtime?   empty
+     |  |  |  |  |  |  +--rw year?        empty
+     |  |  |  |  |  +--rw year!
+     |  |  |  |  |     +--rw localtime?   empty
+     |  |  |  |  |     +--rw msec?        empty
+     |  |  |  |  +--rw year!
+     |  |  |  |     +--rw localtime!
+     |  |  |  |     |  +--rw msec?            empty
+     |  |  |  |     |  +--rw show-timezone?   empty
+     |  |  |  |     +--rw msec!
+     |  |  |  |     |  +--rw localtime?       empty
+     |  |  |  |     |  +--rw show-timezone?   empty
+     |  |  |  |     +--rw show-timezone!
+     |  |  |  |        +--rw localtime?   empty
+     |  |  |  |        +--rw msec?        empty
+     |  |  |  +--rw uptime?     empty
+     |  |  +--rw log
+     |  |     +--rw datetime!
+     |  |     |  +--rw msec?            empty
+     |  |     |  +--rw localtime?       empty
+     |  |     |  +--rw show-timezone?   empty
+     |  |     |  +--rw year?            empty
+     |  |     +--rw uptime?     empty
+     |  +--rw alignment
+     |  |  +--rw detection?   empty
+     |  |  +--rw logging?     empty
+     |  +--rw call-home?                 empty
+     |  +--rw compress-config?           empty
+     |  +--rw config?                    empty
+     |  +--rw counters
+     |  |  +--rw max
+     |  |     +--rw age?   uint8
+     |  +--rw dhcp?                      empty
+     |  +--rw disable-ip-fast-frag?      empty
+     |  +--rw exec-callback?             empty
+     |  +--rw exec-wait?                 empty
+     |  +--rw finger?                    empty
+     |  +--rw heartbeat
+     |  |  +--rw fatal-count?          uint8
+     |  |  +--rw interrupt-interval?   uint8
+     |  |  +--rw interrupt-max?        uint8
+     |  |  +--rw transmit-interval?    uint8
+     |  |  +--rw warning-timeout?      uint8
+     |  +--rw hide-telnet-addresses?     empty
+     |  +--rw linenumber?                empty
+     |  +--rw log-hidden?                empty
+     |  +--rw nagle?                     empty
+     |  +--rw old-slip-prompts?          empty
+     |  +--rw prompt
+     |  |  +--rw config?   empty
+     |  +--rw pt-vty-logging?            empty
+     |  +--rw sequence-numbers?          empty
+     |  +--rw slave-log?                 empty
+     |  +--rw tcp-keepalives-in?         empty
+     |  +--rw tcp-keepalives-out?        empty
+     |  +--rw telnet-zeroidle?           empty
+     |  +--rw tcp-small-servers?         empty
+     |  +--rw udp-small-servers?         empty
+     |  +--rw unsupported-transceiver?   empty
+     +--rw platform
+     +--rw hostname?                string
+     +--rw enable
+     |  +--rw password
+     |  +--rw last-resort?   enumeration
+     |  +--rw secret
+     |  |  +--rw level?    uint8
+     |  |  +--rw type?     enumeration
+     |  |  +--rw secret?   string
+     |  +--rw use-tacacs?    empty
+     +--rw password
+     |  +--rw encryption
+     |     +--rw aes?   empty
+     +--rw eap
+     |  +--rw profile* [name]
+     |     +--rw name              string
+     |     +--rw method
+     |     |  +--rw fast?       empty
+     |     |  +--rw gtc?        empty
+     |     |  +--rw leap?       empty
+     |     |  +--rw mschapv2?   empty
+     |     |  +--rw peap?       empty
+     |     |  +--rw md5?        empty
+     |     |  +--rw tls?        empty
+     |     +--rw pki-trustpoint?   string
+     +--rw archive
+     |  +--rw log
+     |  |  +--rw config
+     |  |     +--rw hidekeys?   empty
+     |  |     +--rw logging
+     |  |     |  +--rw enable?       empty
+     |  |     |  +--rw size?         uint16
+     |  |     |  +--rw persistent!
+     |  |     |     +--rw auto?     empty
+     |  |     |     +--rw reload?   empty
+     |  |     +--rw notify
+     |  |        +--rw syslog!
+     |  |           +--rw contenttype?   enumeration
+     |  +--rw path?           union
+     |  +--rw maximum?        uint8
+     |  +--rw write-memory?   empty
+     |  +--rw time-period?    uint32
+     +--rw username* [name]
+     |  +--rw name         string
+     |  +--rw privilege?   uint8
+     |  +--rw view?        string
+     |  +--rw one-time?    empty
+     |  +--rw password
+     |  |  +--rw encryption?   enumeration
+     |  |  +--rw password?     string
+     |  +--rw secret
+     |     +--rw encryption?   enumeration
+     |     +--rw secret?       string
+     +--rw controller
+     +--rw aqm-register-fnf?        empty
+     +--rw rmon
+     |  +--rw alarm* [number]
+     |  |  +--rw number               uint16
+     |  |  +--rw mib-object?          string
+     |  |  +--rw sample-interval?     uint32
+     |  |  +--rw test-mode?           enumeration
+     |  |  +--rw rising-threshold?    int32
+     |  |  +--rw rising-event?        uint16
+     |  |  +--rw falling-threshold?   int32
+     |  |  +--rw falling-event?       uint16
+     |  |  +--rw owner?               string
+     |  +--rw event* [number]
+     |     +--rw number    uint16
+     |     +--rw log!
+     |        +--rw trap?          string
+     |        +--rw description?   string
+     |        +--rw owner?         string
+     +--rw sampler* [name]
+     |  +--rw name    string
+     +--rw flow
+     +--rw mka
+     +--rw macro
+     |  +--rw global
+     |  |  +--rw description?   string
+     |  +--rw auto
+     +--rw vlan
+     +--rw mvrp
+     +--rw avb!
+     +--rw ptp
+     +--rw cdp
+     +--rw avc
+     +--rw policy
+     +--rw route-map* [name]
+     |  +--rw name    string
+     +--rw route-tag
+     +--rw table-map* [name]
+     |  +--rw name    string
+     +--rw sdm
+     +--rw mls
+     +--rw object-group
+     +--rw pseudowire-class* [name]
+     |  +--rw name    string
+     +--rw control-plane!
+     +--rw control-plane-host
+     |  +--rw control-plane
+     |     +--rw host!
+     |        +--rw management-interface* [interface-name]
+     |           +--rw interface-name    string
+     |           +--rw allow
+     |              +--rw beep?     empty
+     |              +--rw ftp?      empty
+     |              +--rw http?     empty
+     |              +--rw https?    empty
+     |              +--rw snmp?     empty
+     |              +--rw ssh?      empty
+     |              +--rw telnet?   empty
+     |              +--rw tftp?     empty
+     |              +--rw tl1?      empty
+     +--rw config-register?         string
+     +--rw clock
+     |  +--rw calendar-valid!
+     |  +--rw summer-time
+     |  |  +--rw zone?                          string
+     |  |  +--rw (summer-choice)?
+     |  |     +--:(date-case)
+     |  |     |  +--rw date?                    empty
+     |  |     |  +--rw start-day?               uint8
+     |  |     |  +--rw start-month?             ios-types:month-type
+     |  |     |  +--rw start-year?              uint32
+     |  |     |  +--rw start-time?              ios-types:hhmm-type
+     |  |     |  +--rw date-end-day?            uint8
+     |  |     |  +--rw date-end-month?          ios-types:month-type
+     |  |     |  +--rw date-end-year?           uint32
+     |  |     |  +--rw date-end-time?           ios-types:hhmm-type
+     |  |     |  +--rw offset?                  uint16
+     |  |     +--:(recurring-case)
+     |  |        +--rw recurring?               empty
+     |  |        +--rw recurring-start?         union
+     |  |        +--rw recurring-start-day?     ios-types:weekday-type
+     |  |        +--rw recurring-start-month?   ios-types:month-type
+     |  |        +--rw recurring-start-time?    ios-types:hhmm-type
+     |  |        +--rw recurring-end?           union
+     |  |        +--rw recurring-end-day?       ios-types:weekday-type
+     |  |        +--rw recurring-end-month?     ios-types:month-type
+     |  |        +--rw recurring-end-time?      ios-types:hhmm-type
+     |  |        +--rw recurring-offset?        uint16
+     |  +--rw timezone
+     |     +--rw zone?      string
+     |     +--rw offset?    enumeration
+     |     +--rw hours?     int8
+     |     +--rw minutes?   int8
+     +--rw aaa
+     +--rw login
+     |  +--rw delay?        uint8
+     |  +--rw on-failure!
+     |  |  +--rw log!
+     |  |     +--rw every?   uint16
+     |  +--rw on-success!
+     |     +--rw log!
+     |        +--rw every?   uint16
+     +--rw multilink
+     +--rw mac-address-table
+     |  +--rw evc-xconnect
+     |  |  +--rw l2pt-forward-all?   empty
+     |  +--rw limit
+     |  |  +--rw bdomain* [number]
+     |  |     +--rw number     uint16
+     |  |     +--rw action?    enumeration
+     |  |     +--rw maximum?   uint32
+     |  +--rw learning
+     |     +--rw vlan* [id]
+     |        +--rw id        uint16
+     |        +--rw module?   uint8
+     +--rw redundancy!
+     |  +--rw maintenance-mode?   empty
+     |  +--rw main-cpu!
+     |  |  +--rw auto-sync
+     |  |  |  +--rw running-config?    empty
+     |  |  |  +--rw config-register?   empty
+     |  |  |  +--rw bootvar?           empty
+     |  |  |  +--rw standard?          empty
+     |  |  +--rw standby
+     |  |     +--rw console
+     |  |     |  +--rw enable?   empty
+     |  |     +--rw initialization
+     |  |        +--rw delay
+     |  |           +--rw second?      uint16
+     |  |           +--rw boot-only?   empty
+     |  +--rw mode?               enumeration
+     |  +--rw policy
+     |  |  +--rw config-sync
+     |  |     +--rw bulk
+     |  |     |  +--rw prc
+     |  |     |     +--rw reload?   boolean
+     |  |     +--rw lbl
+     |  |        +--rw prc
+     |  |           +--rw reload?   boolean
+     |  +--rw timer
+     |  |  +--rw rpso?   uint16
+     |  +--rw interchassis
+     |     +--rw group* [group-number]
+     |        +--rw group-number    uint64
+     |        +--rw monitor
+     |        |  +--rw peer?   empty
+     |        |  +--rw bfd?    empty
+     |        +--rw member
+     |        |  +--rw ip?   inet:ipv4-address
+     |        +--rw backbone
+     |           +--rw interface
+     +--rw scheduler
+     |  +--rw runtime
+     |  |  +--rw netinput?   uint16
+     |  +--rw allocate
+     |     +--rw interrupt-time?   uint16
+     |     +--rw process-time?     uint16
+     +--rw epm
+     |  +--rw logging?   empty
+     +--rw spanning-tree
+     +--rw subscriber
+     |  +--rw templating?   empty
+     +--rw track
+     +--rw dot1x
+     +--rw fallback
+     +--rw parameter-map* [name]
+     |  +--rw name                  union
+     |  +--rw type?                 enumeration
+     |  +--rw parameter-map-type?   enumeration
+     +--rw ppp
+     +--rw mac
+     |  +--rw address-table
+     |     +--rw aging-time
+     |     |  +--rw val?          uint32
+     |     |  +--rw routed-mac?   empty
+     |     |  +--rw vlan?         uint16
+     |     +--rw control-packet-learn?   empty
+     |     +--rw learning
+     |     |  +--rw vlan?   uint16
+     |     +--rw notification
+     |     |  +--rw change!
+     |     |  |  +--rw history-size?   uint16
+     |     |  |  +--rw interval?       uint32
+     |     |  +--rw mac-move?    empty
+     |     |  +--rw threshold!
+     |     |     +--rw interval?   uint32
+     |     |     +--rw limit
+     |     |        +--rw percentage?   uint8
+     |     |        +--rw interval?     uint32
+     |     +--rw static
+     |        +--rw mac-address?   ios-types:cisco-mac-address-type
+     |        +--rw vlan?          uint16
+     |        +--rw drop?          empty
+     |        +--rw interface?     string
+     +--rw tacacs
+     +--rw tacacs-server
+     +--rw software
+     |  +--rw auto-upgrade
+     |     +--rw enable?   empty
+     +--rw upgrade
+     |  +--rw fpd
+     |     +--rw auto?   empty
+     |     +--rw path?   string
+     +--rw vtp
+     +--rw xconnect
+     +--rw fabric
+     |  +--rw switching-mode
+     |     +--rw allow
+     |     |  +--rw (allow-choice)?
+     |     |     +--:(bus-mode)
+     |     |     |  +--rw bus-mode?    empty
+     |     |     +--:(truncated)
+     |     |        +--rw truncated!
+     |     |           +--rw threshold?   uint8
+     |     +--rw force
+     |        +--rw bus-mode?   empty
+     +--rw port-channel
+     +--rw key
+     +--rw l2
+     |  +--rw router-id?   inet:ipv4-address
+     +--rw system
+     +--rw errdisable
+     |  +--rw detect
+     |  |  +--rw cause
+     |  |     +--rw all?                   empty
+     |  |     +--rw arp-inspection?        empty
+     |  |     +--rw bpduguard?             empty
+     |  |     +--rw dhcp-rate-limit?       empty
+     |  |     +--rw dtp-flap?              empty
+     |  |     +--rw gbic-invalid?          empty
+     |  |     +--rw inline-power?          empty
+     |  |     +--rw l2ptguard?             empty
+     |  |     +--rw link-flap?             empty
+     |  |     +--rw loopback?              empty
+     |  |     +--rw mlacp-minlink?         empty
+     |  |     +--rw pagp-flap?             empty
+     |  |     +--rw pppoe-ia-rate-limit?   empty
+     |  |     +--rw security-violation
+     |  |     |  +--rw shutdown
+     |  |     |     +--rw vlan?   empty
+     |  |     +--rw sfp-config-mismatch?   empty
+     |  |     +--rw small-frame?           empty
+     |  +--rw flap-setting
+     |  |  +--rw cause
+     |  |     +--rw dtp-flap
+     |  |     |  +--rw max-flaps?   uint8
+     |  |     |  +--rw time?        uint8
+     |  |     +--rw link-flap
+     |  |     |  +--rw max-flaps?   uint8
+     |  |     |  +--rw time?        uint8
+     |  |     +--rw pagp-flap
+     |  |        +--rw max-flaps?   uint8
+     |  |        +--rw time?        uint8
+     |  +--rw recovery
+     |     +--rw cause
+     |     |  +--rw all?                    empty
+     |     |  +--rw arp-inspection?         empty
+     |     |  +--rw bpduguard?              empty
+     |     |  +--rw channel-misconfig?      empty
+     |     |  +--rw dhcp-rate-limit?        empty
+     |     |  +--rw dtp-flap?               empty
+     |     |  +--rw gbic-invalid?           empty
+     |     |  +--rw inline-power?           empty
+     |     |  +--rw l2ptguard?              empty
+     |     |  +--rw link-flap?              empty
+     |     |  +--rw link-monitor-failure?   empty
+     |     |  +--rw loopback?               empty
+     |     |  +--rw mac-limit?              empty
+     |     |  +--rw mlacp-minlink?          empty
+     |     |  +--rw oam-remote-failure!
+     |     |  |  +--rw critical-event?   empty
+     |     |  |  +--rw dying-gasp?       empty
+     |     |  |  +--rw link-fault?       empty
+     |     |  +--rw pagp-flap?              empty
+     |     |  +--rw port-mode-failure?      empty
+     |     |  +--rw pppoe-ia-rate-limit?    empty
+     |     |  +--rw psp?                    empty
+     |     |  +--rw psecure-violation?      empty
+     |     |  +--rw security-violation?     empty
+     |     |  +--rw sfp-config-mismatch?    empty
+     |     |  +--rw small-frame?            empty
+     |     |  +--rw storm-control?          empty
+     |     |  +--rw udld?                   empty
+     |     |  +--rw unicast-flood?          empty
+     |     |  +--rw vmps?                   empty
+     |     +--rw interval?   uint32
+     +--rw identity
+     |  +--rw policy* [name]
+     |  |  +--rw name                  string
+     |  |  +--rw no
+     |  |  |  +--rw absolute-timer?       uint16
+     |  |  |  +--rw access-group?         string
+     |  |  |  +--rw description?          string
+     |  |  |  +--rw inactivity-timer?     uint16
+     |  |  |  +--rw interface-template?   string
+     |  |  |  +--rw linksec
+     |  |  |  |  +--rw policy?   enumeration
+     |  |  |  +--rw redirect
+     |  |  |  |  +--rw url?   string
+     |  |  |  +--rw service-policy
+     |  |  |  |  +--rw qos* [direction]
+     |  |  |  |     +--rw direction    enumeration
+     |  |  |  |     +--rw name?        string
+     |  |  |  +--rw sgt?                  uint16
+     |  |  |  +--rw tag?                  string
+     |  |  |  +--rw tunnel
+     |  |  |  |  +--rw type
+     |  |  |  |     +--rw capwap
+     |  |  |  |        +--rw name?   string
+     |  |  |  +--rw vlan?                 uint16
+     |  |  |  +--rw voice
+     |  |  |     +--rw vlan?   empty
+     |  |  +--rw absolute-timer?       uint16
+     |  |  +--rw access-group?         string
+     |  |  +--rw description?          string
+     |  |  +--rw inactivity-timer?     uint16
+     |  |  +--rw interface-template?   string
+     |  |  +--rw linksec
+     |  |  |  +--rw policy?   enumeration
+     |  |  +--rw redirect
+     |  |  |  +--rw url?   string
+     |  |  +--rw service-policy
+     |  |  |  +--rw qos* [direction]
+     |  |  |     +--rw direction    enumeration
+     |  |  |     +--rw name?        string
+     |  |  +--rw sgt?                  uint16
+     |  |  +--rw tag?                  string
+     |  |  +--rw tunnel
+     |  |  |  +--rw type
+     |  |  |     +--rw capwap
+     |  |  |        +--rw name?   string
+     |  |  +--rw vlan?                 uint16
+     |  |  +--rw voice
+     |  |     +--rw vlan?   empty
+     |  +--rw profile
+     |     +--rw dot1x?     empty
+     |     +--rw default?   empty
+     +--rw monitor
+     |  +--rw event-trace
+     |  |  +--rw atom
+     |  |  |  +--rw error
+     |  |  |  |  +--rw enable?    empty
+     |  |  |  |  +--rw disable?   empty
+     |  |  |  |  +--rw include*   monitor-event-type
+     |  |  |  +--rw event
+     |  |  |  |  +--rw enable?    empty
+     |  |  |  |  +--rw disable?   empty
+     |  |  |  |  +--rw size?      uint32
+     |  |  |  |  +--rw exclude*   monitor-event-type
+     |  |  |  +--rw major
+     |  |  |     +--rw enable?    empty
+     |  |  |     +--rw disable?   empty
+     |  |  |     +--rw include*   monitor-event-type
+     |  |  +--rw sequence-number?   empty
+     |  +--rw session* [id]
+     |     +--rw id             uint8
+     |     +--rw destination
+     |     |  +--rw interface* [name]
+     |     |  |  +--rw name             string
+     |     |  |  +--rw encapsulation?   enumeration
+     |     |  |  +--rw ingress?         empty
+     |     |  |  +--rw ingress-encap?   enumeration
+     |     |  |  +--rw vlan?            uint16
+     |     |  +--rw remote
+     |     |     +--rw vlan?   uint16
+     |     +--rw filter
+     |     |  +--rw packet-type
+     |     |  |  +--rw status?      enumeration
+     |     |  |  +--rw direction?   enumeration
+     |     |  +--rw ip
+     |     |     +--rw access-group
+     |     |        +--rw acl-name?   string
+     |     +--rw source
+     |     |  +--rw interface* [name]
+     |     |  |  +--rw name         string
+     |     |  |  +--rw direction?   enumeration
+     |     |  +--rw vlan
+     |     |  |  +--rw vlan?        uint16
+     |     |  |  +--rw direction?   enumeration
+     |     |  +--rw remote
+     |     |     +--rw vlan?   uint16
+     |     +--rw type
+     |        +--rw erspan-source!
+     |           +--rw description?   string
+     |           +--rw source
+     |           |  +--rw interface* [name]
+     |           |  |  +--rw name         string
+     |           |  |  +--rw direction?   enumeration
+     |           |  +--rw vlan* [vlan1]
+     |           |     +--rw vlan1        uint16
+     |           |     +--rw direction?   enumeration
+     |           +--rw filter
+     |           |  +--rw vlan* [vlan1]
+     |           |  |  +--rw vlan1    uint16
+     |           |  +--rw ip
+     |           |     +--rw access-group
+     |           |        +--rw acl-name?   string
+     |           +--rw shutdown?      empty
+     |           +--rw destination!
+     |              +--rw ip
+     |              |  +--rw address?   inet:ipv4-address
+     |              |  +--rw ttl?       uint16
+     |              +--rw erspan-id?   uint16
+     |              +--rw origin
+     |                 +--rw ip
+     |                    +--rw address?   inet:ipv4-address
+     +--rw tftp-server* [name]
+     |  +--rw name    string
+     +--rw radius-server
+     +--rw radius
+     +--rw zone
+     +--rw zone-pair
+     +--rw alarm-contact* [name]
+     |  +--rw name           uint8
+     |  +--rw description?   string
+     |  +--rw severity?      enumeration
+     |  +--rw trigger?       enumeration
+     +--rw ethernet
+     +--rw bridge-domain
+     +--rw crypto
+     +--rw cts
+     +--rw bfd-template
+     +--rw pfr
+     +--rw pfr-map* [pfr-tg]
+     |  +--rw pfr-tg    string
+     +--rw facility-alarm
+     |  +--rw severity?        enumeration
+     |  +--rw exceed-action?   enumeration
+     +--rw setup
+     +--rw tod-clock {ios-features:tod-clock}?
+     |  +--rw input-source
+     |     +--rw priority?   uint8
+     |     +--rw ptp
+     |        +--rw domain?   uint8
+     +--rw network-clock
+     |  +--rw synchronization
+     |  |  +--rw automatic?   empty
+     |  |  +--rw mode?        enumeration
+     |  +--rw wait-to-restore
+     |  |  +--rw time?     uint32
+     |  |  +--rw global?   empty
+     |  +--rw input-source
+     |     +--rw priority?    uint8
+     |     +--rw interface
+     |     +--rw ptp
+     |        +--rw domain?   uint8
+     +--rw l2vpn
+     +--rw l2vpn-config
+     +--rw l3vpn
+     +--rw mpls
+     +--rw router
+     +--rw service-chain
+     +--rw performance
+     +--rw otv
+     +--rw remote-management
+     |  +--rw dmi?           empty
+     |  +--rw restful-api?   boolean
+     +--rw virtual-service* [name]
+     |  +--rw name    string
+     +--rw snmp
+     +--rw snmp-server
+     +--rw segment-routing
+     +--rw disable-eadi?            empty
+     +--rw memory-size {ios-features:mem-size}?
+     |  +--rw iomem?   uint8
+     +--rw transceiver {ios-features:transceiver}?
+     |  +--rw type
+     |     +--rw all
+     |        +--rw monitoring!
+     |           +--rw interval?   uint16
+     +--rw service-insertion
+     +--rw udld
+     +--rw wireless
+     |  +--rw mdns-bridging?   boolean
+     +--rw qos!
+     +--rw time-range* [word]
+     |  +--rw word        string
+     |  +--rw absolute
+     |     +--rw start
+     |        +--rw start-time?     string
+     |        +--rw day-of-month?   uint8
+     |        +--rw month?          string
+     |        +--rw year?           uint16
+     +--rw device-tracking
+     +--rw fhrp
+     |  +--rw version
+     |     +--rw vrrp?   enumeration
+     +--rw metadata
+     |  +--rw flow!
+     |     +--rw transmit?   empty
+     +--rw profile
+     |  +--rw flow?   empty
+     +--rw alias
+     |  +--rw exec
+     |     +--rw alias-name?       string
+     |     +--rw new-alias-name?   string
+     +--rw ntp
+     +--rw wsma
+     +--rw event
+     +--rw template
+     +--rw process
+     |  +--rw cpu
+     |     +--rw threshold
+     |        +--rw type
+     |           +--rw interrupt
+     |           |  +--rw rising
+     |           |     +--rw cpu-range* [cpu-range]
+     |           |        +--rw cpu-range    uint8
+     |           |        +--rw interval
+     |           |           +--rw cpu-range* [cpu-range]
+     |           |              +--rw cpu-range    uint32
+     |           |              +--rw falling
+     |           |                 +--rw cpu-range* [cpu-range]
+     |           |                    +--rw cpu-range    uint8
+     |           |                    +--rw interval?    uint32
+     |           +--rw process
+     |           |  +--rw rising
+     |           |     +--rw cpu-range* [cpu-range]
+     |           |        +--rw cpu-range    uint8
+     |           |        +--rw interval
+     |           |           +--rw cpu-range* [cpu-range]
+     |           |              +--rw cpu-range    uint32
+     |           |              +--rw falling
+     |           |                 +--rw cpu-range* [cpu-range]
+     |           |                    +--rw cpu-range    uint8
+     |           |                    +--rw interval?    uint32
+     |           +--rw total
+     |              +--rw rising
+     |                 +--rw cpu-range* [cpu-range]
+     |                    +--rw cpu-range    uint8
+     |                    +--rw interval
+     |                       +--rw cpu-range* [cpu-range]
+     |                          +--rw cpu-range    uint32
+     |                          +--rw falling
+     |                             +--rw cpu-range* [cpu-range]
+     |                                +--rw cpu-range    uint8
+     |                                +--rw interval?    uint32
+     +--rw exception
+     |  +--rw crashinfo!
+     |     +--rw buffersize?   uint16
+     +--rw iox!

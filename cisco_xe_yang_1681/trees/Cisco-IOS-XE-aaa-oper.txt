@@ -1,0 +1,10 @@
+module: Cisco-IOS-XE-aaa-oper
+  +--ro aaa-data
+     +--ro aaa-users* [username]
+        +--ro username        string
+        +--ro aaa-sessions* [aaa-uid]
+           +--ro aaa-uid       uint32
+           +--ro session-id?   uint32
+           +--ro ip-addr?      inet:ip-address
+           +--ro protocol?     aaa-ios-xe-oper:aaa-sess-prot-type
+           +--ro login-time?   yang:date-and-time

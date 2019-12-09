@@ -1,0 +1,13 @@
+module: ietf-yang-push
+
+  notifications:
+    +---n push-update
+    |  +--ro subscription-id              notif-bis:subscription-id
+    |  +--ro time-of-update?              yang:date-and-time
+    |  +--ro updates-not-sent?            empty
+    |  +--ro datastore-contents-string?   string
+    +---n push-change-update {on-change}?
+       +--ro subscription-id             notif-bis:subscription-id
+       +--ro time-of-update?             yang:date-and-time
+       +--ro updates-not-sent?           empty
+       +--ro datastore-changes-string?   string

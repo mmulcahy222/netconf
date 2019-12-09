@@ -1,0 +1,31 @@
+module: Cisco-IOS-XE-mdt-oper
+  +--ro mdt-oper-data
+     +--ro mdt-streams
+     |  +--ro stream*   string
+     +--ro mdt-subscriptions* [subscription-id]
+     |  +--ro subscription-id     uint32
+     |  +--ro base
+     |  +--ro type?               mdt-oper:mdt-sub-type
+     |  +--ro state?              mdt-oper:mdt-sub-state
+     |  +--ro comments?           string
+     |  +--ro updates-in?         uint64
+     |  +--ro updates-dampened?   uint64
+     |  +--ro updates-dropped?    uint64
+     |  +--ro mdt-receivers* [address port]
+     |     +--ro protocol?           string
+     |     +--ro state?              mdt-oper:mdt-receiver-state
+     |     +--ro comments?           string
+     |     +--ro security-profile?   string
+     +--ro mdt-connections* [address port source-vrf source-address]
+        +--ro transport?           string
+        +--ro peer-id?             string
+        +--ro state?               mdt-oper:mdt-con-state
+        +--ro mdt-sub-con-stats* [sub-id]
+        |  +--ro sub-id             uint32
+        |  +--ro updates-sent?      uint64
+        |  +--ro updates-dropped?   uint64
+        +--ro security-profile?    string
+        +--ro address              inet:ip-address
+        +--ro port                 uint16
+        +--ro source-vrf           string
+        +--ro source-address       inet:ip-address
